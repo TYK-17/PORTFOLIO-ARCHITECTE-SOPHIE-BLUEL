@@ -28,7 +28,7 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
-body {
+body.index-page{
 	line-height: 1;
 }
 ol, ul {
@@ -47,7 +47,7 @@ table {
 	border-spacing: 0;
 }
 /** end reset css**/
-body {
+body.index-page{
 	max-width: 1140px;
 	margin:auto;
 	font-family: 'Work Sans' ;
@@ -225,3 +225,138 @@ footer nav ul {
     background-color: #ffe5e5;
 }
 
+/* Login page */
+
+body.login-page {
+    width: 1440px; /* Largeur spécifique */
+    margin: 0 auto; /* Centrer le contenu */
+    background-color: #fff; /* Optionnel : couleur de fond */
+}
+
+.nav-item-login img {
+    width: 22px;
+    height: 22px;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrer horizontalement */
+    justify-content: center; /* Centrer verticalement */
+    height: 100vh; /* Prend toute la hauteur de la page */
+}
+
+form#login {
+    width: 100%;
+    max-width: 400px; /* Largeur maximale du formulaire */
+    background-color: white; /* Fond blanc */
+    padding: 2rem; /* Espacement interne */
+}
+
+form#login label {
+    display: block;
+    font-size: 1rem; /* Taille du texte */
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #2e7d6c; /* Couleur du label */
+}
+
+form#login input {
+    width: 100%;
+    padding: 0.75rem; /* Taille interne */
+    margin-bottom: 1.5rem; /* Espacement entre les champs */
+    border: 1px solid #ccc; /* Bordure légère */
+    border-radius: 4px; /* Coins arrondis */
+    background-color: #f9f9f9; /* Fond léger */
+    font-size: 1rem; /* Taille de la police */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre interne */
+}
+
+form#login input:focus {
+    border-color: #2e7d6c; /* Bordure verte lors du focus */
+    outline: none; /* Retire le contour par défaut */
+    background-color: #fff; /* Fond blanc au focus */
+}
+
+form#login input[type="submit"] {
+    display: block; /* Transforme le bouton en bloc pour le centrer */
+    margin: 0 auto; /* Centre le bouton horizontalement */
+	width: 179px;
+    background-color: #2e7d6c; /* Couleur de fond */
+    color: white; /* Couleur du texte */
+    font-size: 1rem; /* Taille du texte */
+    font-weight: bold;
+    border: none; /* Pas de bordure */
+    border-radius: 60px; /* Coins arrondis */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Animation fluide */
+}
+
+form#login input[type="submit"]:hover {
+    background-color: #246e5a; /* Couleur au survol */
+}
+
+
+form#login input[type="submit"]:hover {
+    background-color: #246e5a; /* Couleur plus foncée au survol */
+}
+
+form#login .alertError {
+    font-size: 0.875rem;
+    color: red;
+    margin-bottom: 1rem;
+    display: none; /* Masqué par défaut */
+}
+
+#forgot-password {
+    text-align: center; /* Centre le texte */
+    display: block; /* Prend toute la largeur */
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: #3D3D3D; /* Couleur noire */
+    text-decoration: underline; /* Pas de soulignement */
+	font-family: 'Work Sans', sans-serif; /* Utilise Work Sans */
+	font-weight: bold;
+}
+
+#forgot-password:hover {
+    text-decoration: underline; /* Ajoute un soulignement au survol */
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 10rem;
+}
+
+header h1 {
+    font-size: 1.5rem;
+    font-family: 'Syne', sans-serif;
+    color: #964b00; /* Couleur marron */
+}
+
+header nav ul {
+    display: flex;
+    gap: 1.5rem; /* Espacement entre les éléments */
+    list-style: none;
+}
+
+header nav ul li a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #2e7d6c;
+    font-size: 1rem;
+}
+
+header nav ul li a:hover {
+    text-decoration: underline;
+}
+
+footer {
+    text-align: center;
+    margin-top: 2rem;
+    padding: 1rem;
+    font-size: 0.875rem;
+    background-color: #ffffff; /* Couleur de fond */
+}
