@@ -125,6 +125,40 @@ li:hover {
 	text-align: center;
 	margin-bottom: 1em;
 }
+
+.filters {
+    display: flex;
+    gap: 1rem; /* Espace entre les boutons */
+    justify-content: center; /* Centrer les boutons */
+    margin: 40px;
+}
+
+.filter-btn {
+    padding: 0.5rem 1rem; /* Taille interne */
+    font-size: 1rem; /* Taille de la police */
+    border: 2px solid #2e7d6c; /* Couleur de la bordure */
+    border-radius: 50px; /* Coins arrondis */
+    background-color: transparent; /* Fond transparent */
+    color: #2e7d6c; /* Couleur du texte */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Animation fluide sur hover */
+}
+
+.filter-btn.active {
+    background-color: #2e7d6c; /* Fond pour l'option active */
+    color: white; /* Texte en blanc */
+}
+
+.filter-btn:hover {
+    background-color: #d6f5ed; /* Couleur du fond au survol */
+    color: #2e7d6c;
+}
+
+.filters .filter-btn {
+    font-family: 'Syne', sans-serif; /* Utiliser la police Syne */
+    font-weight: 700; /* Optionnel : ajuster l'épaisseur */
+}
+
 .gallery {
 	width: 100%;
 	display: grid;
