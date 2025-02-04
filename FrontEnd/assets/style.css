@@ -186,3 +186,8 @@ footer nav ul {
 	margin: 2em
 }
 
+.error {
+    border: 2px solid red !important;
+    background-color: #ffe5e5;
+}
+
