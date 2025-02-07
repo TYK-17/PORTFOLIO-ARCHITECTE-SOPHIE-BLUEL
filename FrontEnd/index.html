@@ -10,8 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
-    <script src="./scripts/script.js" defer></script> <!-- Corrigé : script.js pour index.html -->
-</head>
+    <script src="./scripts/script.js" defer></script>
 <body class="index-page">
 <header>
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
@@ -39,16 +38,16 @@
     
 	<!-- SECTION DES PROJETS AVEC FILTRES DYNAMIQUES -->
 	<section id="portfolio">
-		<h2>Mes Projets</h2>
+		<div class="portfolio-header">
+			<h2 class="portfolio-title">Mes Projets</h2>
+			<span id="admin-panel">
+				<i class="fa-regular fa-pen-to-square"></i> Modifier
+			</span>
+		</div>
 		<div class="filters"></div> <!-- Filtres générés dynamiquement -->
 		<div class="gallery"></div>  <!-- Galerie des projets chargée en JS -->
-
-		<!-- Bouton Modifier (Visible seulement pour Admin) -->
-		<div id="admin-panel" style="display: none;">
-		    <button id="edit-mode">Modifier</button>
-		</div>
 	</section>
-
+	
 	<!-- FORMULAIRE DE CONTACT -->
 	<section id="contact">
 		<h2>Contact</h2>

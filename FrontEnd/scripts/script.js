@@ -135,8 +135,25 @@ async function filterWorks(categoryId) {
  */
 function setupAdminPanel() {
     const adminPanel = document.getElementById("admin-panel");
+    const filters = document.querySelector(".filters");
+
     if (checkUserLogin()) {
-        adminPanel.style.display = "block";
+        adminPanel.style.display = "block"; // Affiche le bouton Modifier
+        filters.style.display = "none"; // Cache les filtres
+    } else {
+        filters.style.display = "flex"; // Affiche les filtres si non admin
+    }
+}
+
+/**
+ * Gère le mode édition
+ */
+function setupEditMode() {
+    const editButton = document.getElementById("edit-mode");
+    if (editButton) {
+        editButton.addEventListener("click", () => {
+            document.body.classList.toggle("edit-mode-active");
+        });
     }
 }
 
