@@ -5,16 +5,12 @@ document.addEventListener("DOMContentLoaded", () => {
     setupAdminPanel(); // Affiche le mode édition si admin
 });
 
-/**
- * Vérifie si l'utilisateur est connecté
- */
+/*** Vérifie si l'utilisateur est connecté ***/
 function checkUserLogin() {
     return !!sessionStorage.getItem("token"); // Renvoie true si connecté, false sinon
 }
 
-/**
- * Gère l'affichage du menu Login/Logout
- */
+/*** Gère l'affichage du menu Login/Logout ***/
 function setupLoginLogout() {
     const loginLogout = document.getElementById("login-logout");
     
@@ -28,9 +24,7 @@ function setupLoginLogout() {
     }
 }
 
-/**
- * Récupère et affiche les projets dynamiquement depuis l’API
- */
+/*** Récupère et affiche les projets dynamiquement depuis l’API ***/
 async function fetchWorks() {
     try {
         const response = await fetch("http://localhost:5678/api/works");
@@ -43,9 +37,7 @@ async function fetchWorks() {
     }
 }
 
-/**
- * Affiche dynamiquement les projets
- */
+/*** Affiche dynamiquement les projets ***/
 function displayWorks(works) {
     const gallery = document.querySelector(".gallery");
     gallery.innerHTML = ""; // Nettoie l'ancienne galerie
@@ -75,9 +67,7 @@ function displayWorks(works) {
     });
 }
 
-/**
- * Récupère et affiche les catégories sous forme de filtres
- */
+/*** Récupère et affiche les catégories sous forme de filtres ***/
 async function fetchCategories() {
     try {
         const response = await fetch("http://localhost:5678/api/categories");
@@ -90,9 +80,7 @@ async function fetchCategories() {
     }
 }
 
-/**
- * Affiche dynamiquement les filtres
- */
+/*** Affiche dynamiquement les filtres ***/
 function displayFilters(categories) {
     const filterContainer = document.querySelector(".filters");
     filterContainer.innerHTML = ""; // Nettoie les anciens filtres
@@ -114,9 +102,7 @@ function displayFilters(categories) {
     });
 }
 
-/**
- * Filtre les projets par catégorie
- */
+/*** Filtre les projets par catégorie ***/
 async function filterWorks(categoryId) {
     try {
         const response = await fetch("http://localhost:5678/api/works");
@@ -130,24 +116,22 @@ async function filterWorks(categoryId) {
     }
 }
 
-/**
- * Affiche le mode édition pour l’administrateur
- */
+/*** Affiche le mode édition pour l’administrateur ***/
 function setupAdminPanel() {
     const adminPanel = document.getElementById("admin-panel");
     const filters = document.querySelector(".filters");
 
     if (checkUserLogin()) {
-        adminPanel.style.display = "block"; // Affiche le bouton Modifier
+        adminPanel.style.display = "block"; // Affiche le bouton "Modifier" si connecté
         filters.style.display = "none"; // Cache les filtres
     } else {
-        filters.style.display = "flex"; // Affiche les filtres si non admin
+        adminPanel.style.display = "none"; // Masque le bouton "Modifier" si non connecté
+        filters.style.display = "flex"; // Affiche les filtres si non connecté
     }
 }
 
-/**
- * Gère le mode édition
- */
+
+/*** Gère le mode édition ***/
 function setupEditMode() {
     const editButton = document.getElementById("edit-mode");
     if (editButton) {
@@ -157,9 +141,7 @@ function setupEditMode() {
     }
 }
 
-/**
- * Supprime un projet (Admin uniquement)
- */
+/*** Supprime un projet (Admin uniquement) ***/
 async function deleteWork(workId) {
     const token = sessionStorage.getItem("token");
 
@@ -186,3 +168,43 @@ async function deleteWork(workId) {
         console.error(error);
     }
 }
+
+/*** Modal ***/
+document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("modal-gallery");
+    const openModal = document.getElementById("admin-panel"); // Bouton "Modifier"
+    const closeModal = document.querySelector(".modal .close");
+    const addPhotoBtn = document.querySelector(".add-photo-btn");
+
+    // Ouvrir la modal uniquement si l'utilisateur est connecté
+    openModal.addEventListener("click", function () {
+        if (checkUserLogin()) {
+            modal.style.display = "block"; // Affiche la modal si connecté
+        } else {
+            alert("Vous devez être connecté pour accéder à cette fonctionnalité.");
+        }
+    });
+
+    // Fermer la modal
+    closeModal.addEventListener("click", function () {
+        modal.style.display = "none";
+    });
+
+    // Fermer si on clique en dehors de la modal
+    window.addEventListener("click", function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+
+    // Exemple pour ajouter une fonctionnalité au bouton "Ajouter une photo"
+    addPhotoBtn.addEventListener("click", function () {
+        if (checkUserLogin()) {
+            alert("Ajouter une photo !");
+            // Vous pouvez ajouter du code pour ouvrir un formulaire ou uploader une photo ici
+        } else {
+            alert("Vous devez être connecté pour ajouter une photo.");
+        }
+    });
+});
+
