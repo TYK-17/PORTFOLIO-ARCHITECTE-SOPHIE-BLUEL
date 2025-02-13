@@ -428,7 +428,7 @@ footer {
 
 h2 {
     font-size: 26px;
-    margin-bottom: 20px;
+    margin: 60px;
     color: #000000; /* Couleur noire */
 	font-family: 'Work Sans', sans-serif; /* Utilise Work Sans */
 	font-weight: 400;
@@ -439,12 +439,6 @@ h2 {
 
 .image-item {
     position: relative;
-}
-
-.image-item img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
 }
 
 .gallery-divider {
@@ -484,7 +478,6 @@ h2 {
 #modal-gallery .gallery img {
     width: 100%;
     height: auto;
-    border-radius: 10px;
     object-fit: cover;
 }
 
