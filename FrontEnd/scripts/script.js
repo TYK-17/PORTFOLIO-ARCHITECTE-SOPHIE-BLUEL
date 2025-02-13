@@ -27,15 +27,17 @@ function setupLoginLogout() {
 /*** Récupère et affiche les projets dynamiquement depuis l’API ***/
 async function fetchWorks() {
     try {
-        const response = await fetch("http://localhost:5678/api/works");
+        const response = await fetch("http://localhost:5678/api/works"); // Endpoint Swagger
         if (!response.ok) throw new Error("Erreur lors de la récupération des travaux");
         
         const works = await response.json();
-        displayWorks(works);
+        displayWorks(works); // Affiche les projets dans la galerie principale
+        displayModalGallery(works); // Affiche les projets dans la modal
     } catch (error) {
         console.error(error);
     }
 }
+
 
 /*** Affiche dynamiquement les projets ***/
 function displayWorks(works) {
@@ -53,15 +55,6 @@ function displayWorks(works) {
 
         figure.appendChild(img);
         figure.appendChild(figcaption);
-
-        // Ajoute un bouton de suppression si admin connecté
-        if (checkUserLogin()) {
-            const deleteBtn = document.createElement("button");
-            deleteBtn.textContent = "🗑 Supprimer";
-            deleteBtn.classList.add("delete-btn");
-            deleteBtn.addEventListener("click", () => deleteWork(work.id));
-            figure.appendChild(deleteBtn);
-        }
 
         gallery.appendChild(figure);
     });
@@ -207,4 +200,28 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+/*** Affiche les projets dans la modal ***/
+function displayModalGallery(works) {
+    const modalGallery = document.querySelector("#modal-gallery .gallery");
+    modalGallery.innerHTML = ""; // Nettoie la galerie de la modal
+
+    works.forEach(work => {
+        const figure = document.createElement("figure");
+        figure.classList.add("image-item");
+
+        const img = document.createElement("img");
+        img.src = work.imageUrl; // URL de l'image récupérée depuis Swagger
+        img.alt = work.title;
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.classList.add("delete-btn");
+        deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+        deleteBtn.addEventListener("click", () => deleteWork(work.id)); // Supprimer le projet
+
+        figure.appendChild(img);
+        figure.appendChild(deleteBtn);
+        modalGallery.appendChild(figure);
+    });
+}
 

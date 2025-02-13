@@ -356,7 +356,7 @@ form#login .alertError {
     margin-top: 1rem;
     font-size: 0.875rem;
     color: #3D3D3D; /* Couleur noire */
-    text-decoration: underline; /* Pas de soulignement */
+    text-decoration: underline; /* Soulignement */
 	font-family: 'Work Sans', sans-serif; /* Utilise Work Sans */
 	font-weight: bold;
 }
@@ -427,17 +427,15 @@ footer {
 }
 
 h2 {
-    font-size: 24px;
+    font-size: 26px;
     margin-bottom: 20px;
+    color: #000000; /* Couleur noire */
+	font-family: 'Work Sans', sans-serif; /* Utilise Work Sans */
+	font-weight: 400;
 }
 
 /* Galerie d'images */
-.gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 15px;
-    margin: 20px 0;
-}
+
 
 .image-item {
     position: relative;
@@ -449,14 +447,54 @@ h2 {
     border-radius: 10px;
 }
 
-.image-item .delete-btn {
+.gallery-divider {
+    width: 70%;
+    border: none;
+    border-top: 1px solid #B3B3B3;
+    margin: 40px auto;
+}
+
+.add-photo-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: #1D6154;
+	margin : 2em auto ;
+	width: 180px;
+	text-align: center;
+	border-radius: 60px ;
+}
+
+.add-photo-btn:hover {
+    opacity: 0.9;
+}
+#modal-gallery .gallery {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 colonnes */
+    grid-template-rows: repeat(3, auto); /* 3 lignes, hauteur automatique */
+    gap: 15px;
+    margin: 20px 0;
+    justify-content: center;
+}
+
+#modal-gallery .gallery img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+#modal-gallery .delete-btn {
     position: absolute;
     top: 10px;
     right: 10px;
-    background: rgba(255, 0, 0, 0.8);
+    background: rgb(0, 0, 0);
     border: none;
     color: white;
-    border-radius: 50%;
     width: 30px;
     height: 30px;
     display: flex;
@@ -465,21 +503,6 @@ h2 {
     cursor: pointer;
 }
 
-.image-item .delete-btn i {
+#modal-gallery .delete-btn i {
     font-size: 16px;
-}
-
-.add-photo-btn {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.add-photo-btn:hover {
-    opacity: 0.9;
 }
