@@ -45,6 +45,7 @@ function displayWorks(works) {
   gallery.innerHTML = ""; // Nettoie l'ancienne galerie
 
   works.forEach((work) => {
+    console.log("Affichage image :", work.imageUrl); // 🛠️ Vérification
     const figure = document.createElement("figure");
     const img = document.createElement("img");
     img.src = work.imageUrl;
@@ -289,54 +290,72 @@ document.addEventListener("DOMContentLoaded", function () {
   categoryInput.addEventListener("change", checkFormCompletion);
 
   /*** Envoi du formulaire et ajout de la photo ***/
+
+  /*** ✅ Ajoute un projet à la galerie principale ***/
+  function addWorkToGallery(work) {
+    const gallery = document.querySelector(".gallery");
+
+    const figure = document.createElement("figure");
+    const img = document.createElement("img");
+
+    // 🔹 Vérification et construction de l'URL complète
+    const imageUrl = work.imageUrl.startsWith("http")
+      ? work.imageUrl
+      : `http://localhost:5678/images/${work.imageUrl}`;
+
+    console.log("📸 Chemin final de l'image :", imageUrl);
+
+    img.src = imageUrl;
+    img.alt = work.title;
+
+    const figcaption = document.createElement("figcaption");
+    figcaption.textContent = work.title;
+
+    figure.appendChild(img);
+    figure.appendChild(figcaption);
+    gallery.appendChild(figure);
+  }
+
+  /*** 📤 Envoi du formulaire et ajout de la photo ***/
   document
     .getElementById("add-photo-form")
     .addEventListener("submit", async function (event) {
       event.preventDefault();
 
+      // 📂 Récupération des données du formulaire
       const file = document.getElementById("photo-file").files[0];
-      const title = document.getElementById("photo-title").value.trim();
-      const categoryId = Number(
-        document.getElementById("photo-category").value
-      );
+      let title = document.getElementById("photo-title").value.trim();
+      let categoryId = Number(document.getElementById("photo-category").value);
+      let userId = Number(sessionStorage.getItem("userId"));
       const token = sessionStorage.getItem("token");
 
       if (!token) {
-        alert("Vous devez être connecté pour ajouter une photo.");
+        alert("❌ Vous devez être connecté pour ajouter une photo.");
         return;
       }
 
-      if (!file || !title || isNaN(categoryId)) {
-        alert("Veuillez remplir tous les champs !");
+      // 🛑 Vérification des champs obligatoires
+      if (!file || !title || isNaN(categoryId) || isNaN(userId)) {
+        alert("❌ Veuillez remplir tous les champs !");
         return;
       }
 
-      const allowedTypes = ["image/jpeg", "image/png"];
-      if (!allowedTypes.includes(file.type)) {
-        alert("Format d'image non valide. Utilisez JPG ou PNG.");
-        return;
-      }
+      // 🔄 Renommage du fichier avec le titre
+      title = title.replace(/[^a-zA-Z0-9-_]/g, "_").toLowerCase();
+      const newFileName = `${title}.${file.name.split(".").pop()}`;
+      const renamedFile = new File([file], newFileName, { type: file.type });
 
-      if (file.size > 4 * 1024 * 1024) {
-        alert("L'image est trop volumineuse (max 4 Mo)");
-        return;
-      }
+      console.log("📂 Fichier original :", file.name);
+      console.log("🔄 Nouveau fichier :", renamedFile.name);
 
-      // ✅ S'assurer que categoryId est bien un nombre
-      const categoryIdNumber = parseInt(categoryId, 10);
-      if (isNaN(categoryIdNumber)) {
-        alert("Catégorie invalide !");
-        return;
-      }
-
-      // Préparation des données pour l'API
+      // 📝 Construction des données à envoyer
       const formData = new FormData();
-      formData.append("image", file);
+      formData.append("image", renamedFile); // ✅ L'API va générer `imageUrl`
       formData.append("title", title);
-      formData.append("categoryId", categoryId);
+      formData.append("categoryId", categoryId); // ✅ Correct
+      formData.append("userId", userId); // ✅ Correct
 
-      console.log("Données envoyées :", [...formData.entries()]);
-      console.log("Token envoyé :", token);
+      console.log("📤 Données envoyées :", [...formData.entries()]);
 
       try {
         const response = await fetch("http://localhost:5678/api/works", {
@@ -344,10 +363,10 @@ document.addEventListener("DOMContentLoaded", function () {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          body: formData,
+          body: formData, // Envoi du fichier correctement
         });
 
-        console.log("Réponse API : ", response);
+        console.log("📩 Réponse API (status) :", response.status);
 
         if (!response.ok) {
           let errorMessage;
@@ -356,33 +375,112 @@ document.addEventListener("DOMContentLoaded", function () {
           } catch (e) {
             errorMessage = { message: "Erreur inconnue" };
           }
-          console.error("Erreur API :", errorMessage);
+          console.error("❌ Erreur API :", errorMessage);
           alert("Erreur API : " + JSON.stringify(errorMessage));
           throw new Error("Erreur lors de l'ajout du projet.");
         }
 
         const newWork = await response.json();
-        console.log("Nouvelle image ajoutée :", newWork);
+        console.log("✅ Nouvelle image ajoutée :", newWork);
 
-        // Ajoute immédiatement le nouveau projet à la galerie
+        // ✅ Vérification que l'API retourne bien imageUrl
+        if (!newWork.imageUrl || !newWork.id) {
+          console.error(
+            "⚠️ L'API n'a pas renvoyé `imageUrl` ou `id` correctement !"
+          );
+          alert(
+            "L'image a été ajoutée, mais elle ne peut pas s'afficher correctement."
+          );
+          return;
+        }
+
+        // ✅ Ajout de `category` s'il manque
+        if (!newWork.category) {
+          newWork.category = {
+            id: categoryId,
+            name: getCategoryName(categoryId),
+          };
+        }
+
+        // ✅ Formatage correct de `imageUrl`
+        newWork.imageUrl = `http://localhost:5678/images/${newWork.imageUrl}`;
+
+        // 🔹 Ajout de l’image à la galerie et à la modal
         addWorkToGallery(newWork);
         addWorkToModal(newWork);
 
-        // Réinitialiser le formulaire
+        // ✅ Recharge la galerie
+        fetchWorks();
+
+        // ✅ Réinitialisation du formulaire
         this.reset();
         document.getElementById(
           "image-preview"
         ).innerHTML = `<i class="fas fa-image"></i><p>+ Ajouter photo</p><span>jpg, png : 4mo max</span>`;
         document.getElementById("validate-btn").disabled = true;
 
-        // Ferme la modal d'ajout et retourne à la galerie
+        // ✅ Ferme la modal d'ajout et retourne à la galerie
         document.getElementById("modal-add-photo").style.display = "none";
         document.getElementById("modal-gallery").style.display = "block";
       } catch (error) {
-        console.error("Erreur :", error);
+        console.error("❌ Erreur :", error);
         alert("Une erreur est survenue lors de l'ajout de l'image.");
       }
     });
+
+  /*** ✅ Fonction d'ajout d'une image dans la galerie ***/
+  function addWorkToGallery(work) {
+    const gallery = document.querySelector(".gallery");
+
+    const figure = document.createElement("figure");
+    const img = document.createElement("img");
+
+    console.log("📸 Chemin final de l'image :", work.imageUrl);
+
+    img.src = work.imageUrl;
+    img.alt = work.title;
+
+    const figcaption = document.createElement("figcaption");
+    figcaption.textContent = work.title;
+
+    figure.appendChild(img);
+    figure.appendChild(figcaption);
+    gallery.appendChild(figure);
+  }
+
+  /*** ✅ Fonction d'ajout d'une image dans la modal ***/
+  function addWorkToModal(work) {
+    const modalGallery = document.querySelector("#modal-gallery .gallery");
+
+    const figure = document.createElement("figure");
+    figure.classList.add("image-item");
+
+    const img = document.createElement("img");
+
+    console.log("📸 Chemin final de l'image (Modal) :", work.imageUrl);
+
+    img.src = work.imageUrl;
+    img.alt = work.title;
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.classList.add("delete-btn");
+    deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+    deleteBtn.addEventListener("click", () => deleteWork(work.id));
+
+    figure.appendChild(img);
+    figure.appendChild(deleteBtn);
+    modalGallery.appendChild(figure);
+  }
+
+  /*** ✅ Fonction pour obtenir le nom de la catégorie selon l'ID ***/
+  function getCategoryName(categoryId) {
+    const categories = {
+      1: "Objets",
+      2: "Peintures",
+      3: "Photographies",
+    };
+    return categories[categoryId] || "Inconnu";
+  }
 
   /*** 📂 Chargement dynamique des catégories ***/
   async function loadCategories() {
@@ -404,42 +502,4 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   loadCategories();
-
-  /*** Ajoute un projet à la galerie principale ***/
-  function addWorkToGallery(work) {
-    const gallery = document.querySelector(".gallery");
-
-    const figure = document.createElement("figure");
-    const img = document.createElement("img");
-    img.src = work.imageUrl;
-    img.alt = work.title;
-
-    const figcaption = document.createElement("figcaption");
-    figcaption.textContent = work.title;
-
-    figure.appendChild(img);
-    figure.appendChild(figcaption);
-    gallery.appendChild(figure);
-  }
-
-  /*** Ajoute un projet à la modal galerie ***/
-  function addWorkToModal(work) {
-    const modalGallery = document.querySelector("#modal-gallery .gallery");
-
-    const figure = document.createElement("figure");
-    figure.classList.add("image-item");
-
-    const img = document.createElement("img");
-    img.src = work.imageUrl;
-    img.alt = work.title;
-
-    const deleteBtn = document.createElement("button");
-    deleteBtn.classList.add("delete-btn");
-    deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
-    deleteBtn.addEventListener("click", () => deleteWork(work.id));
-
-    figure.appendChild(img);
-    figure.appendChild(deleteBtn);
-    modalGallery.appendChild(figure);
-  }
 });
