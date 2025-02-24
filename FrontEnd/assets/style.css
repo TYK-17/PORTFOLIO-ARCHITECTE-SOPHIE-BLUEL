@@ -3,499 +3,691 @@
    License: none (public domain)
 */
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-	display: block;
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
 }
-body.index-page{
-	line-height: 1;
+body.index-page {
+  line-height: 1;
 }
-ol, ul {
-	list-style: none;
+ol,
+ul {
+  list-style: none;
 }
-blockquote, q {
-	quotes: none;
+blockquote,
+q {
+  quotes: none;
 }
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
 }
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 /* end reset css */
-body.index-page{
-	max-width: 1140px;
-	margin:auto;
-	font-family: 'Work Sans' ;
-	font-size: 14px;
+body.index-page {
+  max-width: 1140px;
+  margin: auto;
+  font-family: "Work Sans";
+  font-size: 14px;
 }
 header {
-	display: flex;
-	justify-content: space-between;
-	margin: 50px 0;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 50px 0;
+  align-items: center;
 }
 
 section {
-	margin: 50px 0
+  margin: 50px 0;
 }
 
-h1{
-	display: flex;
-	flex-direction: column;
-	font-family: 'Syne';
-	font-size: 22px;
-	font-weight: 800;
-	color: #B1663C
+h1 {
+  display: flex;
+  flex-direction: column;
+  font-family: "Syne";
+  font-size: 22px;
+  font-weight: 800;
+  color: #b1663c;
 }
 
 h1 > span {
-	font-family: 'Work Sans';
-	font-size:10px;
-	letter-spacing: 0.1em;
-;
+  font-family: "Work Sans";
+  font-size: 10px;
+  letter-spacing: 0.1em;
 }
 
-h2{
-	font-family: 'Syne';
-	font-weight: 700;
-	font-size: 30px;
-	color: #1D6154
+h2 {
+  font-family: "Syne";
+  font-weight: 700;
+  font-size: 30px;
+  color: #1d6154;
 }
 nav ul {
-	display: flex;
-	align-items: center;
-	list-style-type: none;
-
+  display: flex;
+  align-items: center;
+  list-style-type: none;
 }
 nav li {
-	padding: 0 10px;
-	font-size: 1.2em;
+  padding: 0 10px;
+  font-size: 1.2em;
 }
 
 li:hover {
-	color: #B1663C;
+  color: #b1663c;
 }
 #introduction {
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 }
 #introduction figure {
-	flex: 1
+  flex: 1;
 }
 #introduction img {
-	display: block;
-	margin: auto;
-	width: 80%;
+  display: block;
+  margin: auto;
+  width: 80%;
 }
 
 #introduction article {
-	flex: 1
+  flex: 1;
 }
 #introduction h2 {
-	margin-bottom: 1em;
+  margin-bottom: 1em;
 }
 
 #introduction p {
-	margin-bottom: 0.5em;
+  margin-bottom: 0.5em;
 }
 #portfolio h2 {
-	text-align: center;
+  text-align: center;
 }
 
 /********* Filtres *********/
 body.edit-mode-active .filters {
-    display: none; /* Cache les filtres en mode édition */
+  display: none; /* Cache les filtres en mode édition */
 }
 
 .filters {
-    display: flex;
-    gap: 1rem; /* Espace entre les boutons */
-    justify-content: center; /* Centrer les boutons */
-    margin: 40px;
+  display: flex;
+  gap: 1rem; /* Espace entre les boutons */
+  justify-content: center; /* Centrer les boutons */
+  margin: 40px;
 }
 
 .filter-btn {
-    padding: 0.5rem 1rem; /* Taille interne */
-    font-size: 1rem; /* Taille de la police */
-    border: 2px solid #2e7d6c; /* Couleur de la bordure */
-    border-radius: 50px; /* Coins arrondis */
-    background-color: transparent; /* Fond transparent */
-    color: #2e7d6c; /* Couleur du texte */
-    cursor: pointer;
-    transition: all 0.3s ease; /* Animation fluide sur hover */
+  padding: 0.5rem 1rem; /* Taille interne */
+  font-size: 1rem; /* Taille de la police */
+  border: 2px solid #2e7d6c; /* Couleur de la bordure */
+  border-radius: 50px; /* Coins arrondis */
+  background-color: transparent; /* Fond transparent */
+  color: #2e7d6c; /* Couleur du texte */
+  cursor: pointer;
+  transition: all 0.3s ease; /* Animation fluide sur hover */
 }
 
 .filter-btn.active {
-    background-color: #2e7d6c; /* Fond pour l'option active */
-    color: white; /* Texte en blanc */
+  background-color: #2e7d6c; /* Fond pour l'option active */
+  color: white; /* Texte en blanc */
 }
 
 .filter-btn:hover {
-    background-color: #d6f5ed; /* Couleur du fond au survol */
-    color: #2e7d6c;
+  background-color: #d6f5ed; /* Couleur du fond au survol */
+  color: #2e7d6c;
 }
 
 .filters .filter-btn {
-    font-family: 'Syne', sans-serif; /* Utiliser la police Syne */
-    font-weight: 700; /* Optionnel : ajuster l'épaisseur */
+  font-family: "Syne", sans-serif; /* Utiliser la police Syne */
+  font-weight: 700; /* Optionnel : ajuster l'épaisseur */
 }
 
 /********* Bouton modifier, visible seulement pour Admin *********/
 
 /* Structure du header de la section portfolio */
-.portfolio-header{
-    display: flex;
-    align-items: center; /* Aligne verticalement le titre et le bouton */
-    justify-content: center; /* Centre tout horizontalement */
-    gap: 20px; /* Espacement entre le titre et le bouton */
-    margin-bottom: 40px;
-    padding: 0 0 0 100px;
+.portfolio-header {
+  display: flex;
+  align-items: center; /* Aligne verticalement le titre et le bouton */
+  justify-content: center; /* Centre tout horizontalement */
+  gap: 20px; /* Espacement entre le titre et le bouton */
+  margin-bottom: 40px;
+  padding: 0 0 0 100px;
 }
 
 /* Titre "Mes Projets" */
 .portfolio-title {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #2e7d6c;
-    margin: 0;
-    text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2e7d6c;
+  margin: 0;
+  text-align: center;
 }
 
 /* Bouton Modifier */
 #admin-panel {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 1rem;
-    color: #000;
-    cursor: pointer;
-    transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  color: #000;
+  cursor: pointer;
+  transition: color 0.3s ease;
 }
 
 #admin-panel:hover {
-    color: #2e7d6c; /* Change la couleur au survol */
+  color: #2e7d6c; /* Change la couleur au survol */
 }
 
 #admin-panel i {
-    font-size: 1.2rem; /* Taille de l'icône */
+  font-size: 1.2rem; /* Taille de l'icône */
 }
 
 .gallery {
-	width: 100%;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-	grid-column-gap: 20px;
-	grid-row-gap: 20px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
 }
 
 .gallery img {
-	width: 100%;
-
+  width: 100%;
 }
 #contact {
-	width: 50%;
-    margin: auto;
+  width: 50%;
+  margin: auto;
 }
 
 #contact > * {
-	text-align: center;
-
+  text-align: center;
 }
-#contact h2{
-	margin-bottom: 20px;
+#contact h2 {
+  margin-bottom: 20px;
 }
 #contact form {
-	text-align: left;
-	margin-top:30px;
-	display: flex;
-	flex-direction: column;
+  text-align: left;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
 }
 
 #contact input {
-	height: 50px;
-	font-size: 1.2em;
-	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+  height: 50px;
+  font-size: 1.2em;
+  border: none;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 #contact label {
-	margin: 2em 0 1em 0;
+  margin: 2em 0 1em 0;
 }
 #contact textarea {
-	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+  border: none;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-input[type="submit"]{
-	font-family: 'Syne';
-	font-weight: 700;
-	color: white;
-	background-color: #1D6154;
-	margin : 2em auto ;
-	width: 180px;
-	text-align: center;
-	border-radius: 60px ;
+input[type="submit"] {
+  font-family: "Syne";
+  font-weight: 700;
+  color: white;
+  background-color: #1d6154;
+  margin: 2em auto;
+  width: 180px;
+  text-align: center;
+  border-radius: 60px;
 }
 
 footer nav ul {
-	display: flex;
-	justify-content: flex-end;
-	margin: 2em
+  display: flex;
+  justify-content: flex-end;
+  margin: 2em;
 }
 
 .error {
-    border: 2px solid red !important;
-    background-color: #ffe5e5;
+  border: 2px solid red !important;
+  background-color: #ffe5e5;
 }
 
 /********* Login page *********/
 
 body.login-page {
-    width: 1440px; /* Largeur spécifique */
-    margin: 0 auto; /* Centrer le contenu */
-    background-color: #fff; /* Optionnel : couleur de fond */
+  width: 1440px; /* Largeur spécifique */
+  margin: 0 auto; /* Centrer le contenu */
+  background-color: #fff; /* Optionnel : couleur de fond */
 }
 
 .nav-item-login img {
-    width: 22px;
-    height: 22px;
+  width: 22px;
+  height: 22px;
 }
 
 .login-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centrer horizontalement */
-    justify-content: center; /* Centrer verticalement */
-    height: 100vh; /* Prend toute la hauteur de la page */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centrer horizontalement */
+  justify-content: center; /* Centrer verticalement */
+  height: 100vh; /* Prend toute la hauteur de la page */
 }
 
 form#login {
-    width: 100%;
-    max-width: 400px; /* Largeur maximale du formulaire */
-    background-color: white; /* Fond blanc */
-    padding: 2rem; /* Espacement interne */
+  width: 100%;
+  max-width: 400px; /* Largeur maximale du formulaire */
+  background-color: white; /* Fond blanc */
+  padding: 2rem; /* Espacement interne */
 }
 
 form#login label {
-    display: block;
-    font-size: 1rem; /* Taille du texte */
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    color: #2e7d6c; /* Couleur du label */
+  display: block;
+  font-size: 1rem; /* Taille du texte */
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #2e7d6c; /* Couleur du label */
 }
 
 form#login input {
-    width: 100%;
-    padding: 0.75rem; /* Taille interne */
-    margin-bottom: 1.5rem; /* Espacement entre les champs */
-    border: 1px solid #ccc; /* Bordure légère */
-    border-radius: 4px; /* Coins arrondis */
-    background-color: #f9f9f9; /* Fond léger */
-    font-size: 1rem; /* Taille de la police */
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre interne */
+  width: 100%;
+  padding: 0.75rem; /* Taille interne */
+  margin-bottom: 1.5rem; /* Espacement entre les champs */
+  border: 1px solid #ccc; /* Bordure légère */
+  border-radius: 4px; /* Coins arrondis */
+  background-color: #f9f9f9; /* Fond léger */
+  font-size: 1rem; /* Taille de la police */
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre interne */
 }
 
 form#login input:focus {
-    border-color: #2e7d6c; /* Bordure verte lors du focus */
-    outline: none; /* Retire le contour par défaut */
-    background-color: #fff; /* Fond blanc au focus */
+  border-color: #2e7d6c; /* Bordure verte lors du focus */
+  outline: none; /* Retire le contour par défaut */
+  background-color: #fff; /* Fond blanc au focus */
 }
 
 form#login input[type="submit"] {
-    display: block; /* Transforme le bouton en bloc pour le centrer */
-    margin: 0 auto; /* Centre le bouton horizontalement */
-	width: 179px;
-    background-color: #2e7d6c; /* Couleur de fond */
-    color: white; /* Couleur du texte */
-    font-size: 1rem; /* Taille du texte */
-    font-weight: bold;
-    border: none; /* Pas de bordure */
-    border-radius: 60px; /* Coins arrondis */
-    cursor: pointer;
-    transition: background-color 0.3s ease; /* Animation fluide */
+  display: block; /* Transforme le bouton en bloc pour le centrer */
+  margin: 0 auto; /* Centre le bouton horizontalement */
+  width: 179px;
+  background-color: #2e7d6c; /* Couleur de fond */
+  color: white; /* Couleur du texte */
+  font-size: 1rem; /* Taille du texte */
+  font-weight: bold;
+  border: none; /* Pas de bordure */
+  border-radius: 60px; /* Coins arrondis */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Animation fluide */
 }
 
 form#login input[type="submit"]:hover {
-    background-color: #246e5a; /* Couleur plus foncée au survol */
+  background-color: #246e5a; /* Couleur plus foncée au survol */
 }
 
 form#login .alertError {
-    font-size: 0.875rem;
-    color: red;
-    margin-bottom: 1rem;
-    display: none; /* Masqué par défaut */
+  font-size: 0.875rem;
+  color: red;
+  margin-bottom: 1rem;
+  display: none; /* Masqué par défaut */
 }
 
 #forgot-password {
-    text-align: center; /* Centre le texte */
-    display: block; /* Prend toute la largeur */
-    margin-top: 1rem;
-    font-size: 0.875rem;
-    color: #3D3D3D; /* Couleur noire */
-    text-decoration: underline; /* Soulignement */
-	font-family: 'Work Sans', sans-serif; /* Utilise Work Sans */
-	font-weight: bold;
+  text-align: center; /* Centre le texte */
+  display: block; /* Prend toute la largeur */
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: #3d3d3d; /* Couleur noire */
+  text-decoration: underline; /* Soulignement */
+  font-family: "Work Sans", sans-serif; /* Utilise Work Sans */
+  font-weight: bold;
 }
 
 #forgot-password:hover {
-    text-decoration: underline; /* Ajoute un soulignement au survol */
+  text-decoration: underline; /* Ajoute un soulignement au survol */
 }
 
-
 header h1 {
-    font-size: 1.5rem;
-    font-family: 'Syne', sans-serif;
-    color: #964b00; /* Couleur marron */
+  font-size: 1.5rem;
+  font-family: "Syne", sans-serif;
+  color: #964b00; /* Couleur marron */
 }
 
 header nav ul {
-    display: flex;
-    gap: 1.5rem; /* Espacement entre les éléments */
-    list-style: none;
+  display: flex;
+  gap: 1.5rem; /* Espacement entre les éléments */
+  list-style: none;
 }
 
 header nav ul li a {
-    text-decoration: none;
-    font-weight: bold;
-    color: #2e7d6c;
-    font-size: 1rem;
+  text-decoration: none;
+  font-weight: bold;
+  color: #2e7d6c;
+  font-size: 1rem;
 }
 
 header nav ul li a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 footer {
-    text-align: center;
-    margin-top: 2rem;
-    padding: 1rem;
-    font-size: 0.875rem;
-    background-color: #ffffff; /* Couleur de fond */
+  text-align: center;
+  margin-top: 2rem;
+  padding: 1rem;
+  font-size: 0.875rem;
+  background-color: #ffffff; /* Couleur de fond */
 }
 
 /********* modal *********/
 .modal {
-    display: none; /* Par défaut, elle est cachée */
-    position: fixed;
-    z-index: 10;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fond sombre transparent */
+  display: none; /* Par défaut, elle est cachée */
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  max-height: 100vh;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fond sombre transparent */
+  overflow-y: auto;
 }
 
 .modal-content {
-    background: white;
-    width: 60%;
-    margin: 5% auto;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    text-align: center;
+  background: white;
+  width: 60%;
+  margin: 5% auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
 }
 
 .close {
-    float: right;
-    font-size: 24px;
-    cursor: pointer;
-    color: #333;
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
 }
 
 h2 {
-    font-size: 26px;
-    margin: 60px;
-    color: #000000; /* Couleur noire */
-	font-family: 'Work Sans', sans-serif; /* Utilise Work Sans */
-	font-weight: 400;
+  font-size: 26px;
+  margin: 60px;
+  color: #000000; /* Couleur noire */
+  font-family: "Work Sans", sans-serif; /* Utilise Work Sans */
+  font-weight: 400;
 }
 
 /* Galerie d'images */
 
-
 .image-item {
-    position: relative;
+  position: relative;
 }
 
 .gallery-divider {
-    width: 70%;
-    border: none;
-    border-top: 1px solid #B3B3B3;
-    margin: 40px auto;
+  width: 70%;
+  border: none;
+  border-top: 1px solid #b3b3b3;
+  margin: 40px auto;
 }
 
 .add-photo-btn {
-    padding: 10px 20px;
-    font-size: 14px;
-    border: none;
-    cursor: pointer;
-    font-family: 'Syne';
-	font-weight: 700;
-	color: white;
-	background-color: #1D6154;
-	margin : 2em auto ;
-	width: 180px;
-	text-align: center;
-	border-radius: 60px ;
+  padding: 10px 20px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  font-family: "Syne";
+  font-weight: 700;
+  color: white;
+  background-color: #1d6154;
+  margin: 2em auto;
+  width: 180px;
+  text-align: center;
+  border-radius: 60px;
 }
 
 .add-photo-btn:hover {
-    opacity: 0.9;
+  opacity: 0.9;
 }
 #modal-gallery .gallery {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 5 colonnes */
-    grid-template-rows: repeat(3, auto); /* 3 lignes, hauteur automatique */
-    gap: 15px;
-    margin: 20px 0;
-    justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 colonnes */
+  grid-template-rows: repeat(3, auto); /* 3 lignes, hauteur automatique */
+  gap: 15px;
+  margin: 20px 0;
+  justify-content: center;
 }
 
 #modal-gallery .gallery img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }
 
 #modal-gallery .delete-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgb(0, 0, 0);
-    border: none;
-    color: white;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgb(0, 0, 0);
+  border: none;
+  color: white;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 #modal-gallery .delete-btn i {
-    font-size: 16px;
+  font-size: 16px;
+}
+
+/* Modal d'ajout de photo */
+
+#modal-add-photo {
+  display: none; /* Cachée par défaut */
+  position: fixed;
+  z-index: 20; /* Supérieur à la modal précédente */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  max-height: 90vh; /* Éviter de dépasser l'écran */
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  overflow-y: auto; /* Active le défilement si nécessaire */
+}
+
+/* Bouton de fermeture */
+.close-add {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+  border: none;
+  background: none;
+}
+
+/* Titre de la modal */
+#modal-add-photo h2 {
+  font-size: 22px;
+  font-weight: bold;
+  color: #1d6154;
+  margin-bottom: 20px;
+}
+
+/* Zone d'ajout de l'image */
+.image-upload {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.upload-area {
+  width: 100%;
+  border: 2px dashed #ccc;
+  padding: 15px;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 5px;
+  transition: background 0.3s ease-in-out;
+}
+
+.upload-area:hover {
+  background: #f8f8f8;
+}
+
+.preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.preview img {
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+/* Champs du formulaire */
+#add-photo-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+#add-photo-form label {
+  font-weight: bold;
+  text-align: left;
+  width: 100%;
+  font-size: 14px;
+}
+
+#add-photo-form input,
+#add-photo-form select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* Bouton Valider */
+#validate-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: grey;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: not-allowed;
+  font-weight: bold;
+}
+
+#validate-btn:enabled {
+  background-color: #1d6154;
+  cursor: pointer;
+}
+
+#validate-btn:hover:enabled {
+  background-color: #164d43;
 }
