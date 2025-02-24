@@ -75,6 +75,36 @@ async function fetchCategories() {
   }
 }
 
+/*** 📂 Charge les catégories dans la modal d'ajout de photo ***/
+async function loadCategoriesForModal() {
+  const categoryInput = document.getElementById("photo-category");
+  if (!categoryInput) return;
+
+  try {
+    const response = await fetch("http://localhost:5678/api/categories");
+    if (!response.ok)
+      throw new Error("Erreur lors de la récupération des catégories");
+
+    const categories = await response.json();
+    categoryInput.innerHTML =
+      '<option value="">Sélectionnez une catégorie</option>';
+
+    categories.forEach((category) => {
+      const option = document.createElement("option");
+      option.value = category.id;
+      option.textContent = category.name;
+      categoryInput.appendChild(option);
+    });
+
+    console.log("📂 Catégories chargées pour la modal :", categories);
+  } catch (error) {
+    console.error(
+      "❌ Erreur lors du chargement des catégories pour la modal :",
+      error
+    );
+  }
+}
+
 /*** Affiche dynamiquement les filtres ***/
 function displayFilters(categories) {
   const filterContainer = document.querySelector(".filters");
@@ -252,6 +282,7 @@ document.addEventListener("DOMContentLoaded", function () {
   addPhotoBtn.addEventListener("click", function () {
     modalGallery.style.display = "none";
     modalAddPhoto.style.display = "block";
+    loadCategoriesForModal();
   });
 
   /*** ❌ Ferme la modal d'ajout et revient à la galerie ***/
@@ -367,6 +398,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         console.log("📩 Réponse API (status) :", response.status);
+        const responseData = await response.json();
+        console.log("📜 Contenu de la réponse API :", responseData);
 
         if (!response.ok) {
           let errorMessage;
@@ -396,9 +429,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // ✅ Ajout de `category` s'il manque
         if (!newWork.category) {
+          const categoryOption = document.querySelector(
+            `#photo-category option[value="${categoryId}"]`
+          );
           newWork.category = {
             id: categoryId,
-            name: getCategoryName(categoryId),
+            name: categoryOption ? categoryOption.textContent : "Inconnu",
           };
         }
 
@@ -424,7 +460,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("modal-gallery").style.display = "block";
       } catch (error) {
         console.error("❌ Erreur :", error);
-        alert("Une erreur est survenue lors de l'ajout de l'image.");
       }
     });
 
@@ -471,35 +506,4 @@ document.addEventListener("DOMContentLoaded", function () {
     figure.appendChild(deleteBtn);
     modalGallery.appendChild(figure);
   }
-
-  /*** ✅ Fonction pour obtenir le nom de la catégorie selon l'ID ***/
-  function getCategoryName(categoryId) {
-    const categories = {
-      1: "Objets",
-      2: "Peintures",
-      3: "Photographies",
-    };
-    return categories[categoryId] || "Inconnu";
-  }
-
-  /*** 📂 Chargement dynamique des catégories ***/
-  async function loadCategories() {
-    try {
-      const response = await fetch("http://localhost:5678/api/categories");
-      const categories = await response.json();
-      categoryInput.innerHTML =
-        '<option value="">Sélectionnez une catégorie</option>';
-
-      categories.forEach((category) => {
-        const option = document.createElement("option");
-        option.value = category.id;
-        option.textContent = category.name;
-        categoryInput.appendChild(option);
-      });
-    } catch (error) {
-      console.error("Erreur lors du chargement des catégories :", error);
-    }
-  }
-
-  loadCategories();
 });
