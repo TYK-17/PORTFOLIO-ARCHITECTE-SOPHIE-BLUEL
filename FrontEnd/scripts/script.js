@@ -45,7 +45,6 @@ function displayWorks(works) {
   gallery.innerHTML = ""; // Nettoie l'ancienne galerie
 
   works.forEach((work) => {
-    console.log("Affichage image :", work.imageUrl); // 🛠️ Vérification
     const figure = document.createElement("figure");
     const img = document.createElement("img");
     img.src = work.imageUrl;
@@ -383,10 +382,15 @@ document.addEventListener("DOMContentLoaded", function () {
       const formData = new FormData();
       formData.append("image", renamedFile); // ✅ L'API va générer `imageUrl`
       formData.append("title", title);
-      formData.append("categoryId", categoryId); // ✅ Correct
-      formData.append("userId", userId); // ✅ Correct
+      formData.append("categoryId", Number(categoryId)); // ✅ Correct
+      formData.append("userId", Number(userId)); // ✅ Correct
 
-      console.log("📤 Données envoyées :", [...formData.entries()]);
+      console.log("📤 Données envoyées détaillées :");
+      formData.forEach((value, key) => {
+        console.log(`📝 ${key}:`, value);
+      });
+
+      let responseData = null; // 🔹 Déclare la variable avant le try
 
       try {
         const response = await fetch("http://localhost:5678/api/works", {
@@ -397,76 +401,79 @@ document.addEventListener("DOMContentLoaded", function () {
           body: formData, // Envoi du fichier correctement
         });
 
-        console.log("📩 Réponse API (status) :", response.status);
-        const responseData = await response.json();
-        console.log("📜 Contenu de la réponse API :", responseData);
+        console.log("📩 Statut réponse API :", response.status);
 
+        // Vérification avant de tenter d'extraire le JSON
         if (!response.ok) {
-          let errorMessage;
-          try {
-            errorMessage = await response.json();
-          } catch (e) {
-            errorMessage = { message: "Erreur inconnue" };
-          }
-          console.error("❌ Erreur API :", errorMessage);
-          alert("Erreur API : " + JSON.stringify(errorMessage));
-          throw new Error("Erreur lors de l'ajout du projet.");
-        }
+          console.error("❌ Erreur API (avant JSON) :", response);
 
-        const newWork = await response.json();
-        console.log("✅ Nouvelle image ajoutée :", newWork);
+          // 🔹 Récupérer et afficher le message d'erreur brut
+          const responseText = await response.text();
+          console.log("📜 Réponse brute API :", responseText);
 
-        // ✅ Vérification que l'API retourne bien imageUrl
-        if (!newWork.imageUrl || !newWork.id) {
-          console.error(
-            "⚠️ L'API n'a pas renvoyé `imageUrl` ou `id` correctement !"
-          );
-          alert(
-            "L'image a été ajoutée, mais elle ne peut pas s'afficher correctement."
-          );
+          alert("Erreur API : " + response.status);
           return;
         }
 
-        // ✅ Ajout de `category` s'il manque
-        if (!newWork.category) {
-          const categoryOption = document.querySelector(
-            `#photo-category option[value="${categoryId}"]`
-          );
-          newWork.category = {
-            id: categoryId,
-            name: categoryOption ? categoryOption.textContent : "Inconnu",
-          };
-        }
-
-        // ✅ Formatage correct de `imageUrl`
-        newWork.imageUrl = `http://localhost:5678/images/${newWork.imageUrl}`;
-
-        // 🔹 Ajout de l’image à la galerie et à la modal
-        addWorkToGallery(newWork);
-        addWorkToModal(newWork);
-
-        // ✅ Recharge la galerie
-        fetchWorks();
-
-        // ✅ Réinitialisation du formulaire
-        this.reset();
-        document.getElementById(
-          "image-preview"
-        ).innerHTML = `<i class="fas fa-image"></i><p>+ Ajouter photo</p><span>jpg, png : 4mo max</span>`;
-        document.getElementById("validate-btn").disabled = true;
-
-        // ✅ Ferme la modal d'ajout et retourne à la galerie
-        document.getElementById("modal-add-photo").style.display = "none";
-        document.getElementById("modal-gallery").style.display = "block";
+        // 🔹 Si on arrive ici, response.ok est true → On peut récupérer le JSON
+        responseData = await response.json();
+        console.log("📜 Réponse complète API après ajout :", responseData);
       } catch (error) {
-        console.error("❌ Erreur :", error);
+        console.error("❌ Erreur critique :", error);
+        alert("❌ Une erreur inattendue est survenue.");
+        return;
       }
+
+      if (!responseData) {
+        console.error("❌ Aucune donnée reçue de l'API.");
+        return;
+      }
+
+      const newWork = responseData;
+      console.log("✅ Nouvelle image ajoutée :", newWork);
+
+      // ✅ Vérification que l'API retourne bien `imageUrl` et `id`
+      if (!newWork.imageUrl || !newWork.id) {
+        console.error(
+          "⚠️ L'API n'a pas renvoyé `imageUrl` ou `id` correctement !"
+        );
+        alert(
+          "L'image a été ajoutée, mais elle ne peut pas s'afficher correctement."
+        );
+        return;
+      }
+
+      // ✅ Vérification et correction de `imageUrl` si nécessaire
+      if (!newWork.imageUrl.startsWith("http")) {
+        newWork.imageUrl = `http://localhost:5678/images/${newWork.imageUrl}`;
+      }
+      console.log("✅ URL corrigée :", newWork.imageUrl);
+
+      // 🔹 Ajout de l’image à la galerie et à la modal
+      addWorkToGallery(newWork);
+      addWorkToModal(newWork);
+
+      // ✅ Recharge la galerie
+      fetchWorks();
+      console.log("🔄 Rechargement de la galerie après ajout...");
+
+      // ✅ Réinitialisation du formulaire
+      this.reset();
+      document.getElementById(
+        "image-preview"
+      ).innerHTML = `<i class="fas fa-image"></i><p>+ Ajouter photo</p><span>jpg, png : 4mo max</span>`;
+      document.getElementById("validate-btn").disabled = true;
+
+      // ✅ Ferme la modal d'ajout et retourne à la galerie
+      document.getElementById("modal-add-photo").style.display = "none";
+      document.getElementById("modal-gallery").style.display = "block";
     });
 
   /*** ✅ Fonction d'ajout d'une image dans la galerie ***/
   function addWorkToGallery(work) {
-    const gallery = document.querySelector(".gallery");
+    console.log("🖼️ Ajout de l’image dans la galerie :", work);
 
+    const gallery = document.querySelector(".gallery");
     const figure = document.createElement("figure");
     const img = document.createElement("img");
 
