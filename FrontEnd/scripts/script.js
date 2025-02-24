@@ -443,19 +443,21 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      // ✅ Vérification et correction de `imageUrl` si nécessaire
-      if (!newWork.imageUrl.startsWith("http")) {
-        newWork.imageUrl = `http://localhost:5678/images/${newWork.imageUrl}`;
-      }
-      console.log("✅ URL corrigée :", newWork.imageUrl);
-
-      // 🔹 Ajout de l’image à la galerie et à la modal
+      // ✅ Affichage immédiat de l’image dans la galerie et la modal
       addWorkToGallery(newWork);
       addWorkToModal(newWork);
 
+      console.log("🎉 Image ajoutée immédiatement à la galerie !");
+
+      // ✅ Vérification et correction de `imageUrl` si nécessaire
+      //if (!newWork.imageUrl.startsWith("http")) {
+      //newWork.imageUrl = `http://localhost:5678/images/${newWork.imageUrl}`;
+      //}
+      //console.log("✅ URL corrigée :", newWork.imageUrl);
+
       // ✅ Recharge la galerie
-      fetchWorks();
-      console.log("🔄 Rechargement de la galerie après ajout...");
+      //fetchWorks();
+      //console.log("🔄 Rechargement de la galerie après ajout...");
 
       // ✅ Réinitialisation du formulaire
       this.reset();
