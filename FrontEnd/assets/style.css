@@ -292,9 +292,13 @@ body.edit-mode-active .filters {
   grid-row-gap: 20px;
 }
 
-.gallery img {
-  width: 100%;
+.gallery img,
+#modal-gallery .gallery img {
+  width: 305px;
+  height: 407px;
+  object-fit: cover; /* Recadre l’image pour qu’elle remplisse bien l’espace */
 }
+
 #contact {
   width: 50%;
   margin: auto;

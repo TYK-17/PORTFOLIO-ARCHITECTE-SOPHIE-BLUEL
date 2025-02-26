@@ -124,6 +124,15 @@ function displayFilters(categories) {
     button.addEventListener("click", () => filterWorks(category.id));
     filterContainer.appendChild(button);
   });
+
+  /*** ✅ Activation dynamique des filtres ***/
+  const filterButtons = document.querySelectorAll(".filter-btn");
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      filterButtons.forEach((btn) => btn.classList.remove("active"));
+      this.classList.add("active");
+    });
+  });
 }
 
 /*** Filtre les projets par catégorie ***/
@@ -408,7 +417,7 @@ document.addEventListener("DOMContentLoaded", function () {
         this.reset();
         document.getElementById(
           "image-preview"
-        ).innerHTML = `<i class="fas fa-image"></i><p>+ Ajouter photo</p><span>jpg, png : 4mo max</span>`;
+        ).innerHTML = `<i class="fas fa-image"></i><p>+ Ajout photo</p><span>jpg, png : 4mo max</span>`;
         document.getElementById("validate-btn").disabled = true;
 
         // ✅ Ferme la modal d'ajout et retourne à la galerie
