@@ -321,31 +321,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /*** Envoi du formulaire et ajout de la photo ***/
 
-  /*** ✅ Ajoute un projet à la galerie principale ***/
-  function addWorkToGallery(work) {
-    const gallery = document.querySelector(".gallery");
-
-    const figure = document.createElement("figure");
-    const img = document.createElement("img");
-
-    // 🔹 Vérification et construction de l'URL complète
-    const imageUrl = work.imageUrl.startsWith("http")
-      ? work.imageUrl
-      : `http://localhost:5678/images/${work.imageUrl}`;
-
-    console.log("📸 Chemin final de l'image :", imageUrl);
-
-    img.src = imageUrl;
-    img.alt = work.title;
-
-    const figcaption = document.createElement("figcaption");
-    figcaption.textContent = work.title;
-
-    figure.appendChild(img);
-    figure.appendChild(figcaption);
-    gallery.appendChild(figure);
-  }
-
   /*** 📤 Envoi du formulaire et ajout de la photo ***/
   document
     .getElementById("add-photo-form")
@@ -356,7 +331,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const file = document.getElementById("photo-file").files[0];
       let title = document.getElementById("photo-title").value.trim();
       let categoryId = Number(document.getElementById("photo-category").value);
-      let userId = Number(sessionStorage.getItem("userId"));
       const token = sessionStorage.getItem("token");
 
       if (!token) {
@@ -365,12 +339,12 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // 🛑 Vérification des champs obligatoires
-      if (!file || !title || isNaN(categoryId) || isNaN(userId)) {
+      if (!file || !title || isNaN(categoryId)) {
         alert("❌ Veuillez remplir tous les champs !");
         return;
       }
 
-      // 🔄 Renommage du fichier avec le titre
+      // 🔄 Renommage du fichier avec le titre (sécurisé)
       title = title.replace(/[^a-zA-Z0-9-_]/g, "_").toLowerCase();
       const newFileName = `${title}.${file.name.split(".").pop()}`;
       const renamedFile = new File([file], newFileName, { type: file.type });
@@ -382,15 +356,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const formData = new FormData();
       formData.append("image", renamedFile); // ✅ L'API va générer `imageUrl`
       formData.append("title", title);
-      formData.append("categoryId", Number(categoryId)); // ✅ Correct
-      formData.append("userId", Number(userId)); // ✅ Correct
+      formData.append("category", categoryId); // ✅ Correction (attendu par l'API)
 
-      console.log("📤 Données envoyées détaillées :");
-      formData.forEach((value, key) => {
-        console.log(`📝 ${key}:`, value);
-      });
-
-      let responseData = null; // 🔹 Déclare la variable avant le try
+      console.log("📤 Données envoyées :", [...formData.entries()]);
 
       try {
         const response = await fetch("http://localhost:5678/api/works", {
@@ -398,90 +366,75 @@ document.addEventListener("DOMContentLoaded", function () {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          body: formData, // Envoi du fichier correctement
+          body: formData,
         });
 
-        console.log("📩 Statut réponse API :", response.status);
+        console.log("📩 Réponse API (status) :", response.status);
 
-        // Vérification avant de tenter d'extraire le JSON
         if (!response.ok) {
-          console.error("❌ Erreur API (avant JSON) :", response);
+          let errorMessage;
+          try {
+            errorMessage = await response.json();
+          } catch (e) {
+            errorMessage = { message: "Erreur inconnue" };
+          }
+          console.error("❌ Erreur API :", errorMessage);
+          alert("Erreur API : " + JSON.stringify(errorMessage));
+          throw new Error("Erreur lors de l'ajout du projet.");
+        }
 
-          // 🔹 Récupérer et afficher le message d'erreur brut
-          const responseText = await response.text();
-          console.log("📜 Réponse brute API :", responseText);
+        const newWork = await response.json();
+        console.log("✅ Nouvelle image ajoutée :", newWork);
 
-          alert("Erreur API : " + response.status);
+        // ✅ Vérification de l'`imageUrl` et `id`
+        if (!newWork.imageUrl || !newWork.id) {
+          console.error(
+            "⚠️ L'API n'a pas renvoyé `imageUrl` ou `id` correctement !"
+          );
+          alert(
+            "L'image a été ajoutée, mais elle ne peut pas s'afficher correctement."
+          );
           return;
         }
 
-        // 🔹 Si on arrive ici, response.ok est true → On peut récupérer le JSON
-        responseData = await response.json();
-        console.log("📜 Réponse complète API après ajout :", responseData);
+        // 🔹 Ajout dynamique de l’image à la galerie
+        addWorkToGallery(newWork);
+        addWorkToModal(newWork);
+
+        // ✅ Recharge la galerie
+        fetchWorks();
+
+        // ✅ Réinitialiser le formulaire
+        this.reset();
+        document.getElementById(
+          "image-preview"
+        ).innerHTML = `<i class="fas fa-image"></i><p>+ Ajouter photo</p><span>jpg, png : 4mo max</span>`;
+        document.getElementById("validate-btn").disabled = true;
+
+        // ✅ Ferme la modal d'ajout et retourne à la galerie
+        document.getElementById("modal-add-photo").style.display = "none";
+        document.getElementById("modal-gallery").style.display = "block";
       } catch (error) {
-        console.error("❌ Erreur critique :", error);
-        alert("❌ Une erreur inattendue est survenue.");
-        return;
+        console.error("❌ Erreur :", error);
+        alert("Une erreur est survenue lors de l'ajout de l'image.");
       }
-
-      if (!responseData) {
-        console.error("❌ Aucune donnée reçue de l'API.");
-        return;
-      }
-
-      const newWork = responseData;
-      console.log("✅ Nouvelle image ajoutée :", newWork);
-
-      // ✅ Vérification que l'API retourne bien `imageUrl` et `id`
-      if (!newWork.imageUrl || !newWork.id) {
-        console.error(
-          "⚠️ L'API n'a pas renvoyé `imageUrl` ou `id` correctement !"
-        );
-        alert(
-          "L'image a été ajoutée, mais elle ne peut pas s'afficher correctement."
-        );
-        return;
-      }
-
-      // ✅ Affichage immédiat de l’image dans la galerie et la modal
-      addWorkToGallery(newWork);
-      addWorkToModal(newWork);
-
-      console.log("🎉 Image ajoutée immédiatement à la galerie !");
-
-      // ✅ Vérification et correction de `imageUrl` si nécessaire
-      //if (!newWork.imageUrl.startsWith("http")) {
-      //newWork.imageUrl = `http://localhost:5678/images/${newWork.imageUrl}`;
-      //}
-      //console.log("✅ URL corrigée :", newWork.imageUrl);
-
-      // ✅ Recharge la galerie
-      //fetchWorks();
-      //console.log("🔄 Rechargement de la galerie après ajout...");
-
-      // ✅ Réinitialisation du formulaire
-      this.reset();
-      document.getElementById(
-        "image-preview"
-      ).innerHTML = `<i class="fas fa-image"></i><p>+ Ajouter photo</p><span>jpg, png : 4mo max</span>`;
-      document.getElementById("validate-btn").disabled = true;
-
-      // ✅ Ferme la modal d'ajout et retourne à la galerie
-      document.getElementById("modal-add-photo").style.display = "none";
-      document.getElementById("modal-gallery").style.display = "block";
     });
 
   /*** ✅ Fonction d'ajout d'une image dans la galerie ***/
   function addWorkToGallery(work) {
-    console.log("🖼️ Ajout de l’image dans la galerie :", work);
-
     const gallery = document.querySelector(".gallery");
+
     const figure = document.createElement("figure");
     const img = document.createElement("img");
 
-    console.log("📸 Chemin final de l'image :", work.imageUrl);
+    // 🔹 Vérifier que `imageUrl` est bien présent
+    const imageUrl = work.imageUrl.startsWith("http")
+      ? work.imageUrl
+      : `http://localhost:5678/images/${work.imageUrl}`;
 
-    img.src = work.imageUrl;
+    console.log("📸 Chemin final de l'image :", imageUrl);
+
+    img.src = imageUrl;
     img.alt = work.title;
 
     const figcaption = document.createElement("figcaption");
@@ -500,10 +453,13 @@ document.addEventListener("DOMContentLoaded", function () {
     figure.classList.add("image-item");
 
     const img = document.createElement("img");
+    const imageUrl = work.imageUrl.startsWith("http")
+      ? work.imageUrl
+      : `http://localhost:5678/images/${work.imageUrl}`;
 
-    console.log("📸 Chemin final de l'image (Modal) :", work.imageUrl);
+    console.log("📸 Chemin final de l'image (Modal) :", imageUrl);
 
-    img.src = work.imageUrl;
+    img.src = imageUrl;
     img.alt = work.title;
 
     const deleteBtn = document.createElement("button");
