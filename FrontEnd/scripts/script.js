@@ -234,15 +234,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-
-  // Exemple pour ajouter une fonctionnalité au bouton "Ajouter une photo"
-  addPhotoBtn.addEventListener("click", function () {
-    if (checkUserLogin()) {
-      // Vous pouvez ajouter du code pour ouvrir un formulaire ou uploader une photo ici
-    } else {
-      alert("Vous devez être connecté pour ajouter une photo.");
-    }
-  });
 });
 
 /*** Affiche les projets dans la modal ***/
@@ -275,7 +266,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (modalAddPhoto && modalGallery) {
     modalAddPhoto.style.display = "none";
-    modalGallery.style.display = "block";
+    modalGallery.style.display = "none";
   }
 
   const addPhotoBtn = document.querySelector(".add-photo-btn");

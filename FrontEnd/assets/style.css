@@ -359,6 +359,7 @@ body.login-page {
   width: 1440px; /* Largeur spécifique */
   margin: 0 auto; /* Centrer le contenu */
   background-color: #fff; /* Optionnel : couleur de fond */
+  overflow: hidden;
 }
 
 .nav-item-login img {
