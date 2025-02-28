@@ -24,6 +24,14 @@ function setupLoginLogout() {
   }
 }
 
+function showErrorMessage(message) {
+  const errorElement = document.querySelector("#error");
+  if (errorElement) {
+    errorElement.innerText = message;
+    errorElement.style.display = "block";
+  }
+}
+
 /*** Récupère et affiche les projets dynamiquement depuis l’API ***/
 async function fetchWorks() {
   try {
@@ -36,7 +44,11 @@ async function fetchWorks() {
     displayModalGallery(works); // Affiche les projets dans la modal
   } catch (error) {
     console.error(error);
-    document.querySelector("#error").innerText = error.message;
+    if (error.message === "Failed to fetch") {
+      showErrorMessage("Vous êtes hors connexion");
+    } else {
+      showErrorMessage(error.message);
+    }
   }
 }
 
@@ -72,6 +84,11 @@ async function fetchCategories() {
     displayFilters(categories);
   } catch (error) {
     console.error(error);
+    if (error.message === "Failed to fetch") {
+      showErrorMessage("Vous êtes hors connexion");
+    } else {
+      showErrorMessage(error.message);
+    }
   }
 }
 
@@ -148,6 +165,11 @@ async function filterWorks(categoryId) {
     displayWorks(filteredWorks);
   } catch (error) {
     console.error(error);
+    if (error.message === "Failed to fetch") {
+      showErrorMessage("Vous êtes hors connexion");
+    } else {
+      showErrorMessage(error.message);
+    }
   }
 }
 

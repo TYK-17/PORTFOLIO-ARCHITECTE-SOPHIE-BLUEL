@@ -45,7 +45,12 @@ function setupLogin() {
       form.reset(); // Réinitialise le formulaire
       window.location.href = "index.html"; // Redirection après connexion
     } catch (error) {
-      showError(error.message);
+      console.error(error);
+      if (error.message === "Failed to fetch") {
+        showError("Vous êtes hors connexion");
+      } else {
+        showError(error.message);
+      }
     } finally {
       resetSubmitButton(submitButton);
     }
