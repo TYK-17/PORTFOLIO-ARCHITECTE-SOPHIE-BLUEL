@@ -15,7 +15,7 @@ function setupLoginLogout() {
   const loginLogout = document.getElementById("login-logout");
 
   if (checkUserLogin()) {
-    loginLogout.innerHTML = `<a href="#" id="logout">Logout</a>`;
+    loginLogout.innerHTML = `<a href="#" id="logout">logout</a>`;
     document.getElementById("logout").addEventListener("click", () => {
       sessionStorage.removeItem("token");
       sessionStorage.removeItem("userId");
@@ -36,6 +36,7 @@ async function fetchWorks() {
     displayModalGallery(works); // Affiche les projets dans la modal
   } catch (error) {
     console.error(error);
+    document.querySelector("#error").innerText = error.message;
   }
 }
 

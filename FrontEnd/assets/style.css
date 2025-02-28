@@ -470,6 +470,14 @@ header nav ul li a:hover {
   text-decoration: underline;
 }
 
+.alertError {
+  font-size: 14px;
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+  display: none; /* Caché par défaut */
+}
+
 footer {
   text-align: center;
   margin-top: 2rem;
@@ -590,14 +598,13 @@ h2 {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 400px;
-  max-height: 90vh; /* Éviter de dépasser l'écran */
+  width: 630px;
+  height: 670px;
   background: white;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   text-align: center;
-  overflow-y: auto; /* Active le défilement si nécessaire */
 }
 
 /* Bouton de fermeture */
@@ -679,11 +686,11 @@ h2 {
 /* Bouton Valider */
 #validate-btn {
   width: 100%;
-  padding: 10px;
+  padding: 15px;
   background-color: grey;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 30px;
   cursor: not-allowed;
   font-weight: bold;
 }

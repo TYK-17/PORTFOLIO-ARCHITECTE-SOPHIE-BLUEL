@@ -60,7 +60,7 @@ function checkUserLogin() {
   const loginButton = document.querySelector(".log-in-out");
 
   if (token) {
-    loginButton.innerHTML = `<a href="#" id="logout">Logout</a>`;
+    loginButton.innerHTML = `<a href="#" id="logout">logout</a>`;
     document.getElementById("logout").addEventListener("click", logoutUser);
   }
 }
@@ -83,6 +83,7 @@ function showError(message) {
   errorMessage.style.color = "red";
   errorMessage.style.marginTop = "1rem";
   errorMessage.style.fontWeight = "bold";
+  errorMessage.style.display = "block"; // S'assurer qu'il est visible
 }
 
 /**
