@@ -85,7 +85,7 @@ async function loadCategoriesForModal() {
       throw new Error("Erreur lors de la récupération des catégories");
 
     const categories = await response.json();
-    categoryInput.innerHTML = '<option value="">Catégorie</option>';
+    categoryInput.innerHTML = '<option value=""></option>';
 
     categories.forEach((category) => {
       const option = document.createElement("option");

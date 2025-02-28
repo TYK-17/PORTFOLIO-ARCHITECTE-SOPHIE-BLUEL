@@ -558,7 +558,7 @@ h2 {
 
 #modal-gallery .gallery img {
   width: 100%;
-  height: 137.34px;
+  height: auto;
   object-fit: cover;
 }
 
