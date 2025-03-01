@@ -590,8 +590,6 @@ h2 {
 }
 
 /* Modal d'ajout de photo */
-
-/* Fond sombre semi-transparent pour toute la page */
 #modal-add-photo {
   display: none; /* Cachée par défaut */
   position: fixed;
@@ -606,16 +604,17 @@ h2 {
   justify-content: center;
 }
 
-/* ✅ Conteneur interne de la modal */
+/* ✅ Conteneur interne */
 #modal-add-photo .modal-wrapper {
-  background: white; /* ✅ Fond blanc pour la modal */
+  background: white;
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* ✅ Ajoute une ombre */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   text-align: center;
   position: relative;
-  max-width: 600px; /* ✅ Empêche la modal d'être trop large */
+  max-width: 600px;
   width: 100%;
+  box-sizing: border-box;
 }
 
 /* ✅ Bouton de fermeture */
@@ -632,170 +631,135 @@ h2 {
 
 /* ✅ Style du titre */
 #modal-add-photo h2 {
-  font-size: 22px;
-  font-weight: bold;
-  color: #1d6154; /* ✅ Couleur verte */
-  margin-bottom: 20px;
+  font-size: 26px;
+  color: #000;
+  margin: 20px;
 }
 
 /* ✅ Zone d'ajout de photo */
 #modal-add-photo .image-upload {
-  background: #e8ecef; /* ✅ Fond clair */
+  background: #f4f7fb;
   padding: 20px;
-  margin-bottom: 15px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  max-width: 500px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
+/* ✅ Zone d'upload */
 #modal-add-photo .upload-area {
   width: 100%;
-  border: none;
-  padding: 10px;
+  max-width: 400px;
+  padding: 15px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 #modal-add-photo .upload-area i {
-  font-size: 40px;
-  color: #b3b3b3;
+  font-size: 60px;
+  color: #cbd6dc;
+  margin-bottom: 10px;
+}
+
+.file-container-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border-radius: 0.1875rem;
+  background: #e8f1f6;
+  color: #b9c5cc;
+  border: none;
+}
+
+.fa-image {
+  width: 4.75rem;
+  height: 4.75rem;
+  font-size: 4.75rem;
+  color: #b9c5cc;
+}
+/* Style de l'icône d'image */
+#image-preview i {
+  font-size: 4rem; /* Taille de l'icône */
+  color: #b9c5cc; /* Couleur gris clair */
+  margin-bottom: 10px;
 }
 
 #modal-add-photo .upload-area p {
-  color: #6c757d;
+  background-color: #d1dce5;
+  padding: 10px 30px;
+  border-radius: 20px;
+  color: #306685;
+  font-weight: normal;
   font-size: 14px;
+  cursor: pointer;
+  margin: 10px;
 }
 
-/* ✅ Formulaire */
-#modal-add-photo form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+#modal-add-photo .upload-area span {
+  color: #444444;
+  font-size: 10px;
+  margin-top: 5px;
+  font-weight: normal;
 }
 
-#modal-add-photo label {
+/* ✅ Effet au survol */
+#modal-add-photo .upload-area p:hover {
+  background-color: #c0c9d4;
+}
+
+/* ✅ Labels en gras et bien positionnés */
+#modal-add-photo label,
+#add-photo-form label {
   font-weight: bold;
-  text-align: left;
   font-size: 14px;
   color: #333;
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin: 15px 0 5px;
 }
 
 /* ✅ Champs du formulaire */
 #modal-add-photo input,
 #modal-add-photo select {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding: 12px;
+  border: none;
   font-size: 14px;
   background: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  outline: none;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+#modal-add-photo input:focus,
+#modal-add-photo select:focus {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* ✅ Bouton Valider */
 #validate-btn {
-  width: 100%;
-  padding: 15px;
-  background-color: grey;
+  width: 237px;
+  height: 36px;
+  background-color: #a7a7a7;
   color: white;
   border: none;
   border-radius: 30px;
   cursor: not-allowed;
-  font-weight: bold;
-  font-size: 16px;
-  transition: background 0.3s;
-}
-
-#validate-btn:enabled {
-  background-color: #1d6154;
-  cursor: pointer;
-}
-
-#validate-btn:hover:enabled {
-  background-color: #164d43;
-}
-
-/* Bouton de fermeture */
-.close-add {
-  float: right;
-  font-size: 24px;
-  cursor: pointer;
-  color: #333;
-  border: none;
-  background: none;
-}
-
-/* Titre de la modal */
-#modal-add-photo h2 {
-  font-size: 22px;
-  font-weight: bold;
-  color: #1d6154;
-  margin-bottom: 20px;
-}
-
-/* Zone d'ajout de l'image */
-.image-upload {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-.upload-area {
-  width: 100%;
-  border: 2px dashed #ccc;
-  padding: 15px;
-  cursor: pointer;
-  text-align: center;
-  border-radius: 5px;
-  transition: background 0.3s ease-in-out;
-}
-
-.upload-area:hover {
-  background: #f8f8f8;
-}
-
-.preview {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-}
-
-.preview img {
-  max-width: 100%;
-  border-radius: 5px;
-}
-
-/* Champs du formulaire */
-#add-photo-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-}
-
-#add-photo-form label {
-  font-weight: bold;
-  text-align: left;
-  width: 100%;
   font-size: 14px;
-}
-
-#add-photo-form input,
-#add-photo-form select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 14px;
-}
-
-/* Bouton Valider */
-#validate-btn {
-  width: 100%;
-  padding: 15px;
-  background-color: grey;
-  color: white;
-  border: none;
-  border-radius: 30px;
-  cursor: not-allowed;
+  font-family: Syne;
   font-weight: bold;
+  margin-top: 20px; /* Ajout d'un espace avant le bouton */
 }
 
 #validate-btn:enabled {
