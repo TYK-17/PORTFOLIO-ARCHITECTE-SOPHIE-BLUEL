@@ -591,20 +591,123 @@ h2 {
 
 /* Modal d'ajout de photo */
 
+/* Fond sombre semi-transparent pour toute la page */
 #modal-add-photo {
   display: none; /* Cachée par défaut */
   position: fixed;
-  z-index: 20; /* Supérieur à la modal précédente */
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 630px;
-  height: 670px;
-  background: white;
-  padding: 20px;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* ✅ Fond sombre semi-transparent */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ✅ Conteneur interne de la modal */
+#modal-add-photo .modal-wrapper {
+  background: white; /* ✅ Fond blanc pour la modal */
+  padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* ✅ Ajoute une ombre */
   text-align: center;
+  position: relative;
+  max-width: 600px; /* ✅ Empêche la modal d'être trop large */
+  width: 100%;
+}
+
+/* ✅ Bouton de fermeture */
+#modal-add-photo .close-add {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+  border: none;
+  background: none;
+}
+
+/* ✅ Style du titre */
+#modal-add-photo h2 {
+  font-size: 22px;
+  font-weight: bold;
+  color: #1d6154; /* ✅ Couleur verte */
+  margin-bottom: 20px;
+}
+
+/* ✅ Zone d'ajout de photo */
+#modal-add-photo .image-upload {
+  background: #e8ecef; /* ✅ Fond clair */
+  padding: 20px;
+  margin-bottom: 15px;
+}
+
+#modal-add-photo .upload-area {
+  width: 100%;
+  border: none;
+  padding: 10px;
+  text-align: center;
+}
+
+#modal-add-photo .upload-area i {
+  font-size: 40px;
+  color: #b3b3b3;
+}
+
+#modal-add-photo .upload-area p {
+  color: #6c757d;
+  font-size: 14px;
+}
+
+/* ✅ Formulaire */
+#modal-add-photo form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#modal-add-photo label {
+  font-weight: bold;
+  text-align: left;
+  font-size: 14px;
+  color: #333;
+}
+
+/* ✅ Champs du formulaire */
+#modal-add-photo input,
+#modal-add-photo select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  background: white;
+}
+
+/* ✅ Bouton Valider */
+#validate-btn {
+  width: 100%;
+  padding: 15px;
+  background-color: grey;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: not-allowed;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background 0.3s;
+}
+
+#validate-btn:enabled {
+  background-color: #1d6154;
+  cursor: pointer;
+}
+
+#validate-btn:hover:enabled {
+  background-color: #164d43;
 }
 
 /* Bouton de fermeture */

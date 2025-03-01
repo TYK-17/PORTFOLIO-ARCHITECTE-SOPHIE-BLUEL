@@ -285,12 +285,6 @@ function displayModalGallery(works) {
 document.addEventListener("DOMContentLoaded", function () {
   const modalGallery = document.getElementById("modal-gallery");
   const modalAddPhoto = document.getElementById("modal-add-photo");
-
-  if (modalAddPhoto && modalGallery) {
-    modalAddPhoto.style.display = "none";
-    modalGallery.style.display = "none";
-  }
-
   const addPhotoBtn = document.querySelector(".add-photo-btn");
   const closeAddBtn = document.querySelector(".close-add");
   const fileInput = document.getElementById("photo-file");
@@ -298,18 +292,30 @@ document.addEventListener("DOMContentLoaded", function () {
   const categoryInput = document.getElementById("photo-category");
   const validateBtn = document.getElementById("validate-btn");
   const preview = document.getElementById("image-preview");
-
-  /*** ✅ Remplace la modal galerie par celle d'ajout ***/
-  addPhotoBtn.addEventListener("click", function () {
+  if (modalAddPhoto && modalGallery) {
+    modalAddPhoto.style.display = "none";
     modalGallery.style.display = "none";
-    modalAddPhoto.style.display = "block";
+  }
+
+  /*** ✅ Ouvre la modal d'ajout de photo avec un fond sombre ***/
+  addPhotoBtn.addEventListener("click", function () {
+    modalGallery.style.display = "none"; // Masque la modal gallery
+    modalAddPhoto.style.display = "flex"; // Change de `block` à `flex` pour alignement
     loadCategoriesForModal();
   });
 
   /*** ❌ Ferme la modal d'ajout et revient à la galerie ***/
   closeAddBtn.addEventListener("click", function () {
-    modalAddPhoto.style.display = "none";
-    modalGallery.style.display = "block";
+    modalAddPhoto.style.display = "none"; // Cacher la modal d'ajout
+    modalGallery.style.display = "flex"; // Utiliser `flex` pour garantir l'alignement
+  });
+
+  /*** 🔹 Fermer la modal d'ajout en cliquant en dehors ***/
+  modalAddPhoto.addEventListener("click", function (event) {
+    if (event.target === modalAddPhoto) {
+      modalAddPhoto.style.display = "none"; // Fermer la modal d'ajout
+      modalGallery.style.display = "flex"; // Rétablir la modal gallery
+    }
   });
 
   /*** 📸 Affichage de l'aperçu de l'image sélectionnée ***/
