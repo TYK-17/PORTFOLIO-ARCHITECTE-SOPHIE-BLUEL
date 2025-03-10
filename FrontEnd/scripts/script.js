@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchWorks(); // Charge les projets dynamiquement
   fetchCategories(); // Charge les filtres des catégories
   setupAdminPanel(); // Affiche le mode édition si admin
+  setupEditBar(); // Affiche la barre édition si admin
 });
 
 /*** Vérifie si l'utilisateur est connecté ***/
@@ -194,6 +195,22 @@ function setupEditMode() {
     editButton.addEventListener("click", () => {
       document.body.classList.toggle("edit-mode-active");
     });
+  }
+}
+
+function setupEditBar() {
+  const editBar = document.getElementById("edit-bar");
+  const modalGallery = document.getElementById("modal-gallery");
+
+  if (checkUserLogin()) {
+    editBar.classList.remove("hidden"); // Affiche la barre noire
+
+    // Gestion du clic sur la barre noire
+    editBar.addEventListener("click", () => {
+      modalGallery.style.display = "block";
+    });
+  } else {
+    editBar.classList.add("hidden"); // Cache la barre si l'utilisateur est déco
   }
 }
 

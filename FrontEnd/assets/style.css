@@ -244,6 +244,31 @@ body.edit-mode-active .filters {
   font-weight: 700; /* Optionnel : ajuster l'épaisseur */
 }
 
+/********* Barre d'édition pour Admin *********/
+
+.edit-bar {
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  font-family: "Work Sans", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.edit-bar i {
+  margin-right: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
 /********* Bouton modifier, visible seulement pour Admin *********/
 
 /* Structure du header de la section portfolio */
