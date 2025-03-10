@@ -615,6 +615,20 @@ h2 {
 }
 
 /* Modal d'ajout de photo */
+.return-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.return-btn i {
+  font-size: 1.5rem;
+}
+
 #modal-add-photo {
   display: none; /* Cachée par défaut */
   position: fixed;

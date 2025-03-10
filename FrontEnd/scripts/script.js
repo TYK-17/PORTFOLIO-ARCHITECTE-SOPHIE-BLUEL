@@ -247,7 +247,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const modal = document.getElementById("modal-gallery");
   const openModal = document.getElementById("admin-panel"); // Bouton "Modifier"
   const closeModal = document.querySelector(".modal .close");
-  const addPhotoBtn = document.querySelector(".add-photo-btn");
 
   // Ouvrir la modal uniquement si l'utilisateur est connecté
   if (openModal) {
@@ -304,11 +303,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const modalAddPhoto = document.getElementById("modal-add-photo");
   const addPhotoBtn = document.querySelector(".add-photo-btn");
   const closeAddBtn = document.querySelector(".close-add");
+  const returnBtn = document.querySelector(".return-btn");
+
   const fileInput = document.getElementById("photo-file");
   const titleInput = document.getElementById("photo-title");
   const categoryInput = document.getElementById("photo-category");
   const validateBtn = document.getElementById("validate-btn");
   const preview = document.getElementById("image-preview");
+
   if (modalAddPhoto && modalGallery) {
     modalAddPhoto.style.display = "none";
     modalGallery.style.display = "none";
@@ -325,6 +327,12 @@ document.addEventListener("DOMContentLoaded", function () {
   closeAddBtn.addEventListener("click", function () {
     modalAddPhoto.style.display = "none"; // Cacher la modal d'ajout
     modalGallery.style.display = "flex"; // Utiliser `flex` pour garantir l'alignement
+  });
+
+  // ✅ NOUVEAU : bouton retour pour revenir à la galerie
+  returnBtn.addEventListener("click", function () {
+    modalAddPhoto.style.display = "none";
+    modalGallery.style.display = "flex";
   });
 
   /*** 🔹 Fermer la modal d'ajout en cliquant en dehors ***/
