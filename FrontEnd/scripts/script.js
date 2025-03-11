@@ -4,15 +4,19 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchCategories();
   setupAdminPanel();
   setupEditBar();
-  setupModals(); // Appel centralisé des modaux
+  setupModals();
 });
 
-/*** Vérifie si l'utilisateur est connecté ***/
+/**
+ * Vérifie si l'utilisateur est connecté
+ */
 function checkUserLogin() {
   return !!sessionStorage.getItem("token");
 }
 
-/*** Gère l'affichage du menu Login/Logout ***/
+/**
+ * Gère l'affichage Login/Logout
+ */
 function setupLoginLogout() {
   const loginLogout = document.getElementById("login-logout");
 
@@ -25,6 +29,9 @@ function setupLoginLogout() {
   }
 }
 
+/**
+ * Affiche un message d'erreur
+ */
 function showErrorMessage(message) {
   const errorElement = document.querySelector("#error");
   if (errorElement) {
@@ -33,7 +40,7 @@ function showErrorMessage(message) {
   }
 }
 
-/*** API CALLS - WORKS & CATEGORIES ***/
+/* API CALLS - WORKS & CATEGORIES */
 
 async function fetchWorks() {
   try {
@@ -78,7 +85,7 @@ async function loadCategoriesForModal() {
       throw new Error("Erreur lors de la récupération des catégories");
 
     const categories = await response.json();
-    categoryInput.innerHTML = '<option value=""></option>'; // Réinitialiser
+    categoryInput.innerHTML = '<option value=""></option>'; // Reset select
 
     categories.forEach((category) => {
       const option = document.createElement("option");
@@ -91,7 +98,7 @@ async function loadCategoriesForModal() {
   }
 }
 
-/*** DISPLAY WORKS / FILTERS / MODALS ***/
+/* DISPLAY WORKS, FILTERS, MODAL GALLERY */
 
 function displayWorks(works) {
   const gallery = document.querySelector(".gallery");
@@ -116,27 +123,32 @@ function displayFilters(categories) {
   const filterContainer = document.querySelector(".filters");
   filterContainer.innerHTML = "";
 
-  const allButton = document.createElement("button");
-  allButton.textContent = "Tous";
-  allButton.classList.add("filter-btn", "active");
-  allButton.addEventListener("click", () => fetchWorks());
+  const allButton = createFilterButton("Tous", () => fetchWorks(), true);
   filterContainer.appendChild(allButton);
 
   categories.forEach((category) => {
-    const button = document.createElement("button");
-    button.textContent = category.name;
-    button.classList.add("filter-btn");
-    button.addEventListener("click", () => filterWorks(category.id));
+    const button = createFilterButton(category.name, () =>
+      filterWorks(category.id)
+    );
     filterContainer.appendChild(button);
   });
+}
 
-  const filterButtons = document.querySelectorAll(".filter-btn");
-  filterButtons.forEach((button) => {
-    button.addEventListener("click", function () {
-      filterButtons.forEach((btn) => btn.classList.remove("active"));
-      this.classList.add("active");
-    });
+function createFilterButton(label, onClick, isActive = false) {
+  const button = document.createElement("button");
+  button.textContent = label;
+  button.classList.add("filter-btn");
+  if (isActive) button.classList.add("active");
+
+  button.addEventListener("click", () => {
+    document
+      .querySelectorAll(".filter-btn")
+      .forEach((btn) => btn.classList.remove("active"));
+    button.classList.add("active");
+    onClick();
   });
+
+  return button;
 }
 
 async function filterWorks(categoryId) {
@@ -155,8 +167,6 @@ async function filterWorks(categoryId) {
   }
 }
 
-/*** DISPLAY MODAL GALLERY ***/
-
 function displayModalGallery(works) {
   const modalGallery = document.querySelector("#modal-gallery .gallery");
   modalGallery.innerHTML = "";
@@ -172,7 +182,6 @@ function displayModalGallery(works) {
     const deleteBtn = document.createElement("button");
     deleteBtn.classList.add("delete-btn");
     deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
-
     deleteBtn.addEventListener("click", () => deleteWork(work.id));
 
     figure.appendChild(img);
@@ -181,7 +190,7 @@ function displayModalGallery(works) {
   });
 }
 
-/*** DELETE WORK ***/
+/* DELETE WORK */
 
 async function deleteWork(workId) {
   const token = sessionStorage.getItem("token");
@@ -194,14 +203,15 @@ async function deleteWork(workId) {
     });
 
     if (!response.ok) throw new Error("Erreur lors de la suppression");
+
     alert("Projet supprimé !");
-    fetchWorks(); // Refresh
+    fetchWorks();
   } catch (error) {
     console.error(error);
   }
 }
 
-/*** ADMIN MODE / EDIT BAR ***/
+/* ADMIN MODE & EDIT BAR */
 
 function setupAdminPanel() {
   const adminPanel = document.getElementById("admin-panel");
@@ -230,7 +240,7 @@ function setupEditBar() {
   }
 }
 
-/*** MODAL MANAGEMENT ***/
+/* MODAL MANAGEMENT */
 
 function setupModals() {
   const modalGallery = document.getElementById("modal-gallery");
@@ -257,16 +267,15 @@ function setupModals() {
     });
   }
 
-  if (closeModalGallery) {
-    closeModalGallery.addEventListener("click", () => {
-      modalGallery.style.display = "none";
-    });
-  }
+  closeModalGallery.addEventListener("click", () => {
+    modalGallery.style.display = "none";
+  });
 
   addPhotoBtn.addEventListener("click", () => {
     modalGallery.style.display = "none";
     modalAddPhoto.style.display = "flex";
     loadCategoriesForModal();
+    resetImagePreview();
   });
 
   closeAddBtn.addEventListener("click", () => {
@@ -290,10 +299,15 @@ function setupModals() {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
+
       reader.onload = (e) => {
-        preview.innerHTML = `<img src="${e.target.result}" style="max-width:100%; height:auto; border-radius:5px;">`;
+        preview.classList.add("has-image");
+        preview.innerHTML = `<img src="${e.target.result}" alt="Aperçu de l'image" />`;
       };
+
       reader.readAsDataURL(file);
+    } else {
+      resetImagePreview();
     }
   });
 
@@ -350,9 +364,8 @@ function setupModals() {
         addWorkToModal(newWork);
 
         fetchWorks();
-
         document.getElementById("add-photo-form").reset();
-        preview.innerHTML = `<i class="fas fa-image"></i><p>+ Ajouter photo</p><span>jpg, png : 4mo max</span>`;
+        resetImagePreview();
         validateBtn.disabled = true;
 
         modalAddPhoto.style.display = "none";
@@ -362,15 +375,24 @@ function setupModals() {
         alert("Erreur lors de l'ajout.");
       }
     });
+
+  function resetImagePreview() {
+    preview.classList.remove("has-image");
+    preview.innerHTML = `
+      <i class="fa-regular fa-image fa-4x"></i>
+      <p>+ Ajouter photo</p>
+      <span>jpg, png : 4mo max</span>
+    `;
+  }
 }
 
-/*** ADD WORK TO GALLERY/MODAL ***/
+/* ADD WORK TO GALLERY & MODAL*/
 
 function addWorkToGallery(work) {
   const gallery = document.querySelector(".gallery");
   const figure = document.createElement("figure");
-  const img = document.createElement("img");
 
+  const img = document.createElement("img");
   img.src = work.imageUrl;
   img.alt = work.title;
 

@@ -207,6 +207,7 @@ li:hover {
 }
 
 /********* Filtres *********/
+
 body.edit-mode-active .filters {
   display: none; /* Cache les filtres en mode édition */
 }
@@ -554,8 +555,6 @@ h2 {
   font-weight: 400;
 }
 
-/* Galerie d'images */
-
 .image-item {
   position: relative;
 }
@@ -647,7 +646,7 @@ h2 {
   justify-content: center;
 }
 
-/* ✅ Conteneur interne */
+/* Conteneur interne */
 #modal-add-photo .modal-wrapper {
   background: white;
   padding: 30px;
@@ -660,7 +659,7 @@ h2 {
   box-sizing: border-box;
 }
 
-/* ✅ Bouton de fermeture */
+/* Bouton de fermeture */
 #modal-add-photo .close-add {
   position: absolute;
   top: 15px;
@@ -672,14 +671,14 @@ h2 {
   background: none;
 }
 
-/* ✅ Style du titre */
+/* Style du titre */
 #modal-add-photo h2 {
   font-size: 26px;
   color: #000;
   margin: 20px;
 }
 
-/* ✅ Zone d'ajout de photo */
+/* Zone d'ajout de photo */
 #modal-add-photo .image-upload {
   background: #f4f7fb;
   padding: 20px;
@@ -694,7 +693,7 @@ h2 {
   box-sizing: border-box;
 }
 
-/* ✅ Zone d'upload */
+/* Zone d'upload */
 #modal-add-photo .upload-area {
   width: 100%;
   max-width: 400px;
@@ -733,31 +732,37 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  gap: 10px;
   width: 420px;
   height: 169px;
   background-color: #f4f7fb;
-  overflow: hidden;
   border-radius: 5px;
-  flex-direction: column; /* pour l'icône + texte avant la sélection */
-  gap: 10px;
+  overflow: hidden;
+  box-sizing: border-box;
+  text-align: center;
 }
 
 #image-preview img {
-  display: none; /* caché avant qu'une image soit sélectionnée */
   max-width: 100%;
   max-height: 100%;
-  object-fit: contain;
+  object-fit: cover;
+  border-radius: 5px;
+  display: none; /* Par défaut, caché */
 }
 
-/* Quand une image est ajoutée */
+#image-preview.has-image {
+  flex-direction: row;
+}
+
 #image-preview.has-image i,
 #image-preview.has-image p,
 #image-preview.has-image span {
-  display: none; /* cache les éléments de texte */
+  display: none; /* Cache tout sauf l'image */
 }
 
 #image-preview.has-image img {
-  display: block; /* montre l'image uploadée */
+  display: block;
 }
 
 #modal-add-photo .upload-area p {
@@ -778,12 +783,12 @@ h2 {
   font-weight: normal;
 }
 
-/* ✅ Effet au survol */
+/* Effet au survol */
 #modal-add-photo .upload-area p:hover {
   background-color: #c0c9d4;
 }
 
-/* ✅ Labels en gras et bien positionnés */
+/* Labels en gras et bien positionnés */
 #modal-add-photo label {
   font-size: 14px;
   color: #333;
@@ -852,7 +857,7 @@ h2 {
   margin: 40px auto 20px auto; /* top right bottom left */
 }
 
-/* ✅ Bouton Valider */
+/* Bouton Valider */
 #validate-btn {
   width: 237px;
   height: 36px;

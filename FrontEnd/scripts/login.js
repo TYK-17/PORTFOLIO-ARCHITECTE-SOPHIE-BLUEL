@@ -3,9 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   checkUserLogin(); // Vérifie si l'utilisateur est connecté au chargement de la page
 });
 
-/**
- * Gère la connexion de l'utilisateur
- */
+/* Gère la connexion de l'utilisateur */
 function setupLogin() {
   const form = document.getElementById("login");
 
@@ -57,9 +55,7 @@ function setupLogin() {
   });
 }
 
-/**
- * Vérifie si l'utilisateur est connecté et met à jour l'interface
- */
+/* Vérifie si l'utilisateur est connecté et met à jour l'interface */
 function checkUserLogin() {
   const token = sessionStorage.getItem("token");
   const loginButton = document.querySelector(".log-in-out");
@@ -70,18 +66,14 @@ function checkUserLogin() {
   }
 }
 
-/**
- * Gère la déconnexion de l'utilisateur
- */
+/* Gère la déconnexion de l'utilisateur */
 function logoutUser() {
   sessionStorage.removeItem("token");
   sessionStorage.removeItem("userId");
   window.location.href = "login.html"; // Redirection vers la page de connexion
 }
 
-/**
- * Affiche un message d'erreur en cas d'échec de connexion
- */
+/* Affiche un message d'erreur en cas d'échec de connexion */
 function showError(message) {
   const errorMessage = document.getElementById("error-login");
   errorMessage.textContent = message;
@@ -91,17 +83,13 @@ function showError(message) {
   errorMessage.style.display = "block"; // S'assurer qu'il est visible
 }
 
-/**
- * Réinitialise le bouton de soumission après la connexion
- */
+/* Réinitialise le bouton de soumission après la connexion */
 function resetSubmitButton(button) {
   button.value = "Se connecter";
   button.disabled = false;
 }
 
-/**
- * Ajoute un projet (requête `POST /works`)
- */
+/* Ajoute un projet (requête `POST /works`) */
 async function addWork(image, title, category) {
   const token = sessionStorage.getItem("token");
 
@@ -134,9 +122,7 @@ async function addWork(image, title, category) {
   }
 }
 
-/**
- * Supprime un projet (requête `DELETE /works/{id}`)
- */
+/* Supprime un projet */
 async function deleteWork(workId) {
   const token = sessionStorage.getItem("token");
 
