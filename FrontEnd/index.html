@@ -152,14 +152,19 @@
         </div>
 
         <form id="add-photo-form">
-          <label for="photo-title">Titre :</label>
-          <input type="text" id="photo-title" name="photo-title" />
+          <div class="form-group">
+            <label for="photo-title">Titre</label>
+            <input type="text" id="photo-title" name="photo-title" />
+          </div>
 
-          <label for="photo-category">Catégorie :</label>
-          <select id="photo-category" name="photo-category">
-            <option value="">Catégorie</option>
-          </select>
+          <div class="form-group">
+            <label for="photo-category">Catégorie</label>
+            <select id="photo-category" name="photo-category">
+              <option value="">Catégorie</option>
+            </select>
+          </div>
 
+          <hr class="separator" />
           <button type="submit" id="validate-btn" disabled>Valider</button>
         </form>
       </div>

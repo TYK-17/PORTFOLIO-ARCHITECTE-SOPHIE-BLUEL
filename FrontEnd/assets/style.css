@@ -486,13 +486,18 @@ header nav ul {
 
 header nav ul li a {
   text-decoration: none;
-  font-weight: bold;
-  color: #2e7d6c;
+  color: #000000;
   font-size: 1rem;
 }
 
 header nav ul li a:hover {
   text-decoration: underline;
+}
+
+.nav-item img {
+  width: 20px;
+  height: auto;
+  vertical-align: middle;
 }
 
 .alertError {
@@ -614,7 +619,7 @@ h2 {
   font-size: 16px;
 }
 
-/* Modal d'ajout de photo */
+/********* Modal d'ajout de photo *********/
 .return-btn {
   position: absolute;
   top: 20px;
@@ -638,7 +643,6 @@ h2 {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5); /* ✅ Fond sombre semi-transparent */
-  display: flex;
   align-items: center;
   justify-content: center;
 }
@@ -661,7 +665,7 @@ h2 {
   position: absolute;
   top: 15px;
   right: 15px;
-  font-size: 24px;
+  font-size: 20px;
   cursor: pointer;
   color: #333;
   border: none;
@@ -684,8 +688,8 @@ h2 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 60%;
-  max-width: 500px;
+  width: 420px;
+  height: 169px;
   margin: 0 auto;
   box-sizing: border-box;
 }
@@ -705,7 +709,6 @@ h2 {
 #modal-add-photo .upload-area i {
   font-size: 60px;
   color: #cbd6dc;
-  margin-bottom: 10px;
 }
 
 .file-container-item {
@@ -720,17 +723,10 @@ h2 {
   border: none;
 }
 
-.fa-image {
-  width: 4.75rem;
-  height: 4.75rem;
-  font-size: 4.75rem;
-  color: #b9c5cc;
-}
 /* Style de l'icône d'image */
 #image-preview i {
   font-size: 4rem; /* Taille de l'icône */
   color: #b9c5cc; /* Couleur gris clair */
-  margin-bottom: 10px;
 }
 
 #modal-add-photo .upload-area p {
@@ -757,9 +753,7 @@ h2 {
 }
 
 /* ✅ Labels en gras et bien positionnés */
-#modal-add-photo label,
-#add-photo-form label {
-  font-weight: bold;
+#modal-add-photo label {
   font-size: 14px;
   color: #333;
   display: block;
@@ -768,11 +762,22 @@ h2 {
   margin: 15px 0 5px;
 }
 
-/* ✅ Champs du formulaire */
-#modal-add-photo input,
-#modal-add-photo select {
+#modal-add-photo .form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centre le label et l'input ensemble */
   width: 100%;
-  padding: 12px;
+}
+
+#modal-add-photo .form-group label {
+  width: 420px; /* Même largeur que l'input */
+  text-align: left; /* Pour que le texte reste à gauche */
+}
+
+/* Styles pour les champs INPUTS */
+#modal-add-photo input {
+  width: 420px;
+  padding: 12px 0;
   border: none;
   font-size: 14px;
   background: white;
@@ -781,9 +786,39 @@ h2 {
   transition: box-shadow 0.3s ease-in-out;
 }
 
-#modal-add-photo input:focus,
-#modal-add-photo select:focus {
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+/* Styles pour le SELECT + CHEVRON */
+#modal-add-photo select {
+  width: 420px;
+  padding: 12px 16px; /* un padding latéral plus large */
+  border: none;
+  font-size: 14px;
+  background: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  outline: none;
+  transition: box-shadow 0.3s ease-in-out;
+
+  /* Retire l'apparence native */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  /* Ajoute le chevron */
+  background-image: url("../assets/icons/chevron-down.svg");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 16px 16px;
+
+  /* Laisse de l'espace au texte pour pas chevaucher le chevron */
+  padding-right: 40px;
+}
+
+.separator {
+  width: 420px; /* même largeur que tes inputs/select */
+  max-width: 100%;
+  height: 1px;
+  background-color: #b3b3b3;
+  border: none;
+  margin: 40px auto 20px auto; /* top right bottom left */
 }
 
 /* ✅ Bouton Valider */

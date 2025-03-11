@@ -326,20 +326,20 @@ document.addEventListener("DOMContentLoaded", function () {
   /*** ❌ Ferme la modal d'ajout et revient à la galerie ***/
   closeAddBtn.addEventListener("click", function () {
     modalAddPhoto.style.display = "none"; // Cacher la modal d'ajout
-    modalGallery.style.display = "flex"; // Utiliser `flex` pour garantir l'alignement
+    modalGallery.style.display = "block";
   });
 
   // ✅ NOUVEAU : bouton retour pour revenir à la galerie
   returnBtn.addEventListener("click", function () {
     modalAddPhoto.style.display = "none";
-    modalGallery.style.display = "flex";
+    modalGallery.style.display = "block";
   });
 
   /*** 🔹 Fermer la modal d'ajout en cliquant en dehors ***/
   modalAddPhoto.addEventListener("click", function (event) {
     if (event.target === modalAddPhoto) {
       modalAddPhoto.style.display = "none"; // Fermer la modal d'ajout
-      modalGallery.style.display = "flex"; // Rétablir la modal gallery
+      modalGallery.style.display = "block"; // Rétablir la modal gallery
     }
   });
 
