@@ -519,25 +519,38 @@ footer {
 
 /********* modal *********/
 .modal {
-  display: none; /* Par défaut, elle est cachée */
+  display: none;
+  align-items: center; /* vertical */
+  justify-content: center; /* horizontal */
+
   position: fixed;
   z-index: 10;
   left: 0;
   top: 0;
-  max-height: 100vh;
+
+  width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Fond sombre transparent */
-  overflow-y: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  /* bonus si tu veux : éviter de scroller derrière */
+  overflow: hidden;
+}
+.modal.open {
+  display: flex;
 }
 
-.modal-content {
-  background: white;
-  width: 60%;
-  margin: 5% auto;
+#modal-gallery .modal-content {
+  width: 630px;
+  height: 688px;
   padding: 20px;
+
+  background: white;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .close {
@@ -593,10 +606,17 @@ h2 {
   justify-content: center;
 }
 
-#modal-gallery .gallery img {
+#modal-gallery .gallery figure {
   width: 100%;
-  height: auto;
+  height: 100%;
+  overflow: hidden;
+}
+
+#modal-gallery .gallery figure img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 #modal-gallery .delete-btn {
@@ -644,6 +664,10 @@ h2 {
   background-color: rgba(0, 0, 0, 0.5); /* ✅ Fond sombre semi-transparent */
   align-items: center;
   justify-content: center;
+}
+
+#modal-add-photo.open {
+  display: flex;
 }
 
 /* Conteneur interne */

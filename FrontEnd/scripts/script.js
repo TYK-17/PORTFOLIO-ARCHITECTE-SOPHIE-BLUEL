@@ -190,6 +190,14 @@ function displayModalGallery(works) {
   });
 }
 
+function closeAllModals() {
+  const modalGallery = document.getElementById("modal-gallery");
+  const modalAddPhoto = document.getElementById("modal-add-photo");
+
+  closeModal(modalGallery);
+  closeModal(modalAddPhoto);
+}
+
 /* DELETE WORK */
 
 async function deleteWork(workId) {
@@ -204,8 +212,10 @@ async function deleteWork(workId) {
 
     if (!response.ok) throw new Error("Erreur lors de la suppression");
 
-    alert("Projet supprimé !");
+    //alert("Projet supprimé !");
+
     fetchWorks();
+    closeAllModals();
   } catch (error) {
     console.error(error);
   }
@@ -233,7 +243,7 @@ function setupEditBar() {
   if (checkUserLogin()) {
     editBar.classList.remove("hidden");
     editBar.addEventListener("click", () => {
-      modalGallery.style.display = "block";
+      openModal(modalGallery);
     });
   } else {
     editBar.classList.add("hidden");
@@ -245,7 +255,7 @@ function setupEditBar() {
 function setupModals() {
   const modalGallery = document.getElementById("modal-gallery");
   const modalAddPhoto = document.getElementById("modal-add-photo");
-  const openModal = document.getElementById("admin-panel");
+  const openModalBtn = document.getElementById("admin-panel");
   const closeModalGallery = document.querySelector(".modal .close");
   const addPhotoBtn = document.querySelector(".add-photo-btn");
   const closeAddBtn = document.querySelector(".close-add");
@@ -257,10 +267,10 @@ function setupModals() {
   const validateBtn = document.getElementById("validate-btn");
   const preview = document.getElementById("image-preview");
 
-  if (openModal) {
-    openModal.addEventListener("click", () => {
+  if (openModalBtn) {
+    openModalBtn.addEventListener("click", () => {
       if (checkUserLogin()) {
-        modalGallery.style.display = "block";
+        openModal(modalGallery);
       } else {
         alert("Vous devez être connecté !");
       }
@@ -268,30 +278,31 @@ function setupModals() {
   }
 
   closeModalGallery.addEventListener("click", () => {
-    modalGallery.style.display = "none";
+    closeModal(modalGallery);
   });
 
   addPhotoBtn.addEventListener("click", () => {
-    modalGallery.style.display = "none";
-    modalAddPhoto.style.display = "flex";
+    console.log("Click détecté : ouverture de modalAddPhoto");
+    closeModal(modalGallery);
+    openModal(modalAddPhoto);
     loadCategoriesForModal();
     resetImagePreview();
   });
 
   closeAddBtn.addEventListener("click", () => {
-    modalAddPhoto.style.display = "none";
-    modalGallery.style.display = "block";
+    closeModal(modalAddPhoto);
+    openModal(modalGallery);
   });
 
   returnBtn.addEventListener("click", () => {
-    modalAddPhoto.style.display = "none";
-    modalGallery.style.display = "block";
+    closeModal(modalAddPhoto);
+    openModal(modalGallery);
   });
 
   modalAddPhoto.addEventListener("click", (e) => {
     if (e.target === modalAddPhoto) {
-      modalAddPhoto.style.display = "none";
-      modalGallery.style.display = "block";
+      closeModal(modalAddPhoto);
+      openModal(modalGallery);
     }
   });
 
@@ -368,8 +379,10 @@ function setupModals() {
         resetImagePreview();
         validateBtn.disabled = true;
 
-        modalAddPhoto.style.display = "none";
-        modalGallery.style.display = "block";
+        //modalAddPhoto.style.display = "none";
+        //modalGallery.style.display = "block";
+
+        closeAllModals();
       } catch (error) {
         console.error(error);
         alert("Erreur lors de l'ajout.");
@@ -421,4 +434,12 @@ function addWorkToModal(work) {
   figure.appendChild(img);
   figure.appendChild(deleteBtn);
   modalGallery.appendChild(figure);
+}
+
+function openModal(modalElement) {
+  modalElement.classList.add("open");
+}
+
+function closeModal(modalElement) {
+  modalElement.classList.remove("open");
 }
