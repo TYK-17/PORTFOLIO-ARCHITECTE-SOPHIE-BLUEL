@@ -333,8 +333,8 @@ body.edit-mode-active .filters {
 #contact p {
   font-size: 16px;
   font-family: "Work Sans";
-  text-align: center; /* (optionnel si tu veux qu'il reste centré) */
-  margin-bottom: 20px; /* (optionnel pour l'espacement sous le texte) */
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 #contact > * {
