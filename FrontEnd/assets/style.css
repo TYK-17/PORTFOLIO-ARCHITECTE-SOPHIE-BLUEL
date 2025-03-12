@@ -386,6 +386,12 @@ body.login-page {
   margin: 0 auto; /* Centrer le contenu */
   background-color: #fff; /* Optionnel : couleur de fond */
   overflow: hidden;
+
+  /* Contrôle de la hauteur */
+  align-items: center;
+  justify-content: center;
+
+  height: 100vh; /* prend tout l'écran */
 }
 
 .nav-item-login img {
@@ -399,6 +405,9 @@ body.login-page {
   align-items: center; /* Centrer horizontalement */
   justify-content: center; /* Centrer verticalement */
   height: 100vh; /* Prend toute la hauteur de la page */
+
+  min-height: 50vh; /* ❗️ moitié de la hauteur de la fenêtre */
+  max-height: 50vh;
 }
 
 form#login {
@@ -492,7 +501,8 @@ header nav ul li a {
 }
 
 header nav ul li a:hover {
-  text-decoration: underline;
+  font-weight: bold;
+  text-decoration: none;
 }
 
 .nav-item img {
