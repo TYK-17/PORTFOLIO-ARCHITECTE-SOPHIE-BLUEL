@@ -14,9 +14,7 @@ function checkUserLogin() {
   return !!sessionStorage.getItem("token");
 }
 
-/**
- * Gère l'affichage Login/Logout
- */
+/* Gère l'affichage Login/Logout */
 function setupLoginLogout() {
   const loginLogout = document.getElementById("login-logout");
 
@@ -29,9 +27,21 @@ function setupLoginLogout() {
   }
 }
 
-/**
- * Affiche un message d'erreur
- */
+function translateError(message) {
+  const errorMessages = {
+    "Failed to fetch": "Vous êtes hors connexion",
+    "Erreur lors de la récupération des travaux":
+      "Impossible de charger les projets.",
+    "Erreur lors de la récupération des catégories":
+      "Impossible de charger les catégories.",
+    "Erreur lors du filtrage": "Impossible d'afficher les projets filtrés.",
+    "Erreur lors de la suppression": "Impossible de supprimer l'élément.",
+    "Erreur lors de l'ajout": "Impossible d'ajouter le projet.",
+  };
+  return errorMessages[message] || message;
+}
+
+/* Affiche un message d'erreur */
 function showErrorMessage(message) {
   const errorElement = document.querySelector("#error");
   if (errorElement) {
@@ -53,11 +63,8 @@ async function fetchWorks() {
     displayModalGallery(works);
   } catch (error) {
     console.error(error);
-    showErrorMessage(
-      error.message === "Failed to fetch"
-        ? "Vous êtes hors connexion"
-        : error.message
-    );
+    const translatedMessage = translateError(error.message);
+    showErrorMessage(translatedMessage);
   }
 }
 
@@ -71,7 +78,7 @@ async function fetchCategories() {
     displayFilters(categories);
   } catch (error) {
     console.error(error);
-    showErrorMessage(error.message);
+    showErrorMessage(translateError(error.message));
   }
 }
 
@@ -94,7 +101,7 @@ async function loadCategoriesForModal() {
       categoryInput.appendChild(option);
     });
   } catch (error) {
-    console.error("Erreur catégories modal :", error);
+    console.error(error.message);
   }
 }
 
@@ -163,7 +170,7 @@ async function filterWorks(categoryId) {
     displayWorks(filteredWorks);
   } catch (error) {
     console.error(error);
-    showErrorMessage(error.message);
+    showErrorMessage(translateError(error.message));
   }
 }
 
@@ -196,6 +203,11 @@ function closeAllModals() {
 
   closeModal(modalGallery);
   closeModal(modalAddPhoto);
+
+  // Remise à zéro uniquement si modalAddPhoto était ouverte
+  if (modalAddPhoto.classList.contains("open")) {
+    resetAddPhotoForm();
+  }
 }
 
 /* DELETE WORK */
@@ -209,15 +221,12 @@ async function deleteWork(workId) {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
-
     if (!response.ok) throw new Error("Erreur lors de la suppression");
-
-    //alert("Projet supprimé !");
-
     fetchWorks();
     closeAllModals();
   } catch (error) {
     console.error(error);
+    showErrorMessage(translateError(error.message));
   }
 }
 
@@ -269,16 +278,13 @@ function setupModals() {
 
   if (openModalBtn) {
     openModalBtn.addEventListener("click", () => {
-      if (checkUserLogin()) {
-        openModal(modalGallery);
-      } else {
-        alert("Vous devez être connecté !");
-      }
+      if (checkUserLogin()) openModal(modalGallery);
     });
   }
 
-  closeModalGallery.addEventListener("click", () => {
-    closeModal(modalGallery);
+  closeModalGallery.addEventListener("click", () => closeModal(modalGallery));
+  modalGallery.addEventListener("click", (e) => {
+    if (e.target === modalGallery) closeModal(modalGallery);
   });
 
   addPhotoBtn.addEventListener("click", () => {
@@ -291,61 +297,91 @@ function setupModals() {
 
   closeAddBtn.addEventListener("click", () => {
     closeModal(modalAddPhoto);
-    openModal(modalGallery);
+    resetAddPhotoForm();
   });
 
   returnBtn.addEventListener("click", () => {
     closeModal(modalAddPhoto);
+    resetAddPhotoForm();
     openModal(modalGallery);
   });
 
   modalAddPhoto.addEventListener("click", (e) => {
     if (e.target === modalAddPhoto) {
       closeModal(modalAddPhoto);
+      resetAddPhotoForm();
       openModal(modalGallery);
+    }
+  });
+
+  // Gestion fichier image upload
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      if (modalAddPhoto.classList.contains("open")) {
+        resetAddPhotoForm();
+      }
+
+      const modals = document.querySelectorAll(".modal.open");
+      modals.forEach((modal) => closeModal(modal));
     }
   });
 
   fileInput.addEventListener("change", (event) => {
     const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
 
-      reader.onload = (e) => {
-        preview.classList.add("has-image");
-        preview.innerHTML = `<img src="${e.target.result}" alt="Aperçu de l'image" />`;
-      };
-
-      reader.readAsDataURL(file);
-    } else {
+    // 1. Vérifier si un fichier a été sélectionné
+    if (!file) {
       resetImagePreview();
+      return;
     }
+
+    // 2. Vérification du type (MIME type)
+    const allowedTypes = ["image/jpeg", "image/png"];
+    if (!allowedTypes.includes(file.type)) {
+      alert("Format invalide ! Veuillez choisir un fichier JPG ou PNG.");
+      fileInput.value = ""; // Réinitialise le champ
+      resetImagePreview();
+      return;
+    }
+
+    // 3. Vérification de la taille (max 4 Mo)
+    const maxSizeInBytes = 4 * 1024 * 1024; // 4 Mo
+    if (file.size > maxSizeInBytes) {
+      alert("Fichier trop volumineux ! Maximum 4 Mo.");
+      fileInput.value = ""; // Réinitialise le champ
+      resetImagePreview();
+      return;
+    }
+
+    // 4. Aperçu si tout est ok
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      preview.classList.add("has-image");
+      preview.innerHTML = `<img src="${e.target.result}" alt="Aperçu de l'image" />`;
+    };
+    reader.readAsDataURL(file);
   });
 
   [fileInput, titleInput, categoryInput].forEach((input) => {
     input.addEventListener("input", checkFormCompletion);
   });
 
-  function checkFormCompletion() {
-    validateBtn.disabled = !(
-      fileInput.files.length &&
-      titleInput.value.trim() &&
-      categoryInput.value
-    );
-  }
-
   document
     .getElementById("add-photo-form")
     .addEventListener("submit", async (e) => {
       e.preventDefault();
-
       const file = fileInput.files[0];
       let title = titleInput.value.trim();
       const categoryId = categoryInput.value;
       const token = sessionStorage.getItem("token");
 
-      if (!file || !title || !categoryId) {
-        alert("Tous les champs sont obligatoires !");
+      if (!file) {
+        alert("L'image est obligatoire !");
+        return;
+      }
+
+      if (!title || !categoryId) {
+        alert("Le titre et la catégorie sont obligatoires !");
         return;
       }
 
@@ -355,7 +391,6 @@ function setupModals() {
         `${title}.${file.name.split(".").pop()}`,
         { type: file.type }
       );
-
       const formData = new FormData();
       formData.append("image", newFile);
       formData.append("title", title);
@@ -367,27 +402,25 @@ function setupModals() {
           headers: { Authorization: `Bearer ${token}` },
           body: formData,
         });
-
         if (!response.ok) throw new Error("Erreur lors de l'ajout");
-
-        const newWork = await response.json();
-        addWorkToGallery(newWork);
-        addWorkToModal(newWork);
-
         fetchWorks();
+        closeAllModals();
         document.getElementById("add-photo-form").reset();
         resetImagePreview();
         validateBtn.disabled = true;
-
-        //modalAddPhoto.style.display = "none";
-        //modalGallery.style.display = "block";
-
-        closeAllModals();
       } catch (error) {
         console.error(error);
-        alert("Erreur lors de l'ajout.");
+        showErrorMessage(translateError(error.message));
       }
     });
+
+  function checkFormCompletion() {
+    validateBtn.disabled = !(
+      fileInput.files.length &&
+      titleInput.value.trim() &&
+      categoryInput.value
+    );
+  }
 
   function resetImagePreview() {
     preview.classList.remove("has-image");
@@ -396,6 +429,12 @@ function setupModals() {
       <p>+ Ajouter photo</p>
       <span>jpg, png : 4mo max</span>
     `;
+  }
+
+  function resetAddPhotoForm() {
+    document.getElementById("add-photo-form").reset();
+    resetImagePreview();
+    validateBtn.disabled = true;
   }
 }
 
@@ -441,5 +480,7 @@ function openModal(modalElement) {
 }
 
 function closeModal(modalElement) {
-  modalElement.classList.remove("open");
+  if (modalElement && modalElement.classList.contains("open")) {
+    modalElement.classList.remove("open");
+  }
 }

@@ -179,29 +179,54 @@ nav li {
 li:hover {
   color: #b1663c;
 }
+
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 60px;
+}
+
 #introduction {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
+  gap: 60px;
+  margin-left: 20px;
 }
+
 #introduction figure {
-  flex: 1;
+  flex: none;
+  width: 474px;
 }
+
 #introduction img {
+  width: 474px;
+  height: 355px;
+  object-fit: cover;
   display: block;
-  margin: auto;
-  width: 80%;
 }
 
 #introduction article {
   flex: 1;
+  margin-left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centre verticalement le texte */
+  max-width: 400px; /* Limiter la largeur du texte pour une bonne lisibilité */
 }
+
 #introduction h2 {
-  margin-bottom: 1em;
+  margin-bottom: 20px;
+  font-size: 26px;
+  color: #1d6154;
+  font-weight: 700;
 }
 
 #introduction p {
-  margin-bottom: 0.5em;
+  line-height: 1.5;
+  margin-bottom: 10px;
 }
+
 #portfolio h2 {
   text-align: center;
 }
@@ -311,18 +336,22 @@ body.edit-mode-active .filters {
 }
 
 .gallery {
-  width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-left: 20px;
 }
 
-.gallery img,
-#modal-gallery .gallery img {
-  width: 305px;
-  height: 407px;
-  object-fit: cover; /* Recadre l’image pour qu’elle remplisse bien l’espace */
+.gallery figure {
+  margin: 0;
+  padding: 0;
+}
+
+.gallery img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
 }
 
 #contact {
@@ -592,6 +621,11 @@ footer {
   justify-content: space-between;
 }
 
+#modal-gallery .modal-content h2 {
+  text-align: center;
+  margin: 20px auto; /* facultatif, ajuste si besoin */
+}
+
 .close {
   float: right;
   font-size: 24px;
@@ -601,7 +635,6 @@ footer {
 
 h2 {
   font-size: 26px;
-  margin: 60px;
   color: #000000; /* Couleur noire */
   font-family: "Work Sans", sans-serif; /* Utilise Work Sans */
   font-weight: 400;
@@ -717,8 +750,7 @@ h2 {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   text-align: center;
   position: relative;
-  max-width: 600px;
-  width: 100%;
+  width: 630px;
   box-sizing: border-box;
 }
 

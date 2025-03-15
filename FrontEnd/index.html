@@ -41,70 +41,77 @@
       </nav>
     </header>
     <main>
-      <section id="introduction">
-        <figure>
-          <img
-            src="./assets/images/sophie-bluel.png"
-            alt="Photo Sophie Bluel"
-          />
-        </figure>
-        <article>
-          <h2>Designer d'espace</h2>
-          <p>
-            Je raconte votre histoire, je valorise vos idées. Je vous accompagne
-            de la conception à la livraison finale du chantier.
-          </p>
-          <p>
-            Chaque projet sera étudié en commun, de façon à mettre en valeur les
-            volumes, les matières et les couleurs dans le respect de l’esprit
-            des lieux et le choix adapté des matériaux.
-          </p>
-          <p>
-            En cas de besoin, une équipe pluridisciplinaire peut-être constituée
-            : architecte DPLG, décorateur(trice).
-          </p>
-        </article>
-      </section>
+      <div class="container">
+        <section id="introduction">
+          <figure>
+            <img
+              src="./assets/images/sophie-bluel.png"
+              alt="Photo Sophie Bluel"
+            />
+          </figure>
+          <article>
+            <h2>Designer d'espace</h2>
+            <p>
+              Je raconte votre histoire, je valorise vos idées. Je vous
+              accompagne de la conception à la livraison finale du chantier.
+            </p>
+            <p>
+              Chaque projet sera étudié en commun, de façon à mettre en valeur
+              les volumes, les matières et les couleurs dans le respect de
+              l’esprit des lieux et le choix adapté des matériaux.
+            </p>
+            <p>
+              En cas de besoin, une équipe pluridisciplinaire peut-être
+              constituée : architecte DPLG, décorateur(trice).
+            </p>
+          </article>
+        </section>
 
-      <!-- SECTION DES PROJETS AVEC FILTRES DYNAMIQUES -->
-      <section id="portfolio">
-        <div class="portfolio-header">
-          <h2 class="portfolio-title">Mes Projets</h2>
-          <span id="admin-panel">
-            <i class="fa-regular fa-pen-to-square"></i> Modifier
-          </span>
-        </div>
+        <!-- SECTION DES PROJETS AVEC FILTRES DYNAMIQUES -->
+        <section id="portfolio">
+          <div class="portfolio-header">
+            <h2 class="portfolio-title">Mes Projets</h2>
+            <span id="admin-panel">
+              <i class="fa-regular fa-pen-to-square"></i> Modifier
+            </span>
+          </div>
 
-        <p
-          id="error"
-          style="
-            color: red;
-            font-weight: bold;
-            text-align: center;
-            display: none;
-          "
-        ></p>
+          <p
+            id="error"
+            style="
+              color: red;
+              font-weight: bold;
+              text-align: center;
+              display: none;
+            "
+          ></p>
 
-        <div class="filters"></div>
-        <!-- Filtres générés dynamiquement -->
-        <div class="gallery"></div>
-        <!-- Galerie des projets chargée en JS -->
-      </section>
+          <div class="filters"></div>
+          <!-- Filtres générés dynamiquement -->
+          <div class="gallery"></div>
+          <!-- Galerie des projets chargée en JS -->
+        </section>
 
-      <!-- FORMULAIRE DE CONTACT -->
-      <section id="contact">
-        <h2>Contact</h2>
-        <p>Vous avez un projet ? Discutons-en !</p>
-        <form action="#" method="post">
-          <label for="name">Nom</label>
-          <input type="text" name="name" id="name" />
-          <label for="email">Email</label>
-          <input type="email" name="email" id="email" />
-          <label for="message">Message</label>
-          <textarea name="message" id="message" cols="30" rows="10"></textarea>
-          <input type="submit" value="Envoyer" class="envoyer" />
-        </form>
-      </section>
+        <!-- FORMULAIRE DE CONTACT -->
+        <section id="contact">
+          <h2>Contact</h2>
+          <p>Vous avez un projet ? Discutons-en !</p>
+          <form action="#" method="post">
+            <label for="name">Nom</label>
+            <input type="text" name="name" id="name" />
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" />
+            <label for="message">Message</label>
+            <textarea
+              name="message"
+              id="message"
+              cols="30"
+              rows="10"
+            ></textarea>
+            <input type="submit" value="Envoyer" class="envoyer" />
+          </form>
+        </section>
+      </div>
     </main>
 
     <footer>
