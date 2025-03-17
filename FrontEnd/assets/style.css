@@ -304,7 +304,6 @@ body.edit-mode-active .filters {
   justify-content: center; /* Centre tout horizontalement */
   gap: 20px; /* Espacement entre le titre et le bouton */
   margin-bottom: 40px;
-  padding: 0 0 0 100px;
 }
 
 /* Titre "Mes Projets" */
@@ -348,8 +347,8 @@ body.edit-mode-active .filters {
 }
 
 .gallery img {
-  width: 100%;
-  height: auto;
+  width: 305px;
+  height: 407px;
   object-fit: cover;
   display: block;
 }
