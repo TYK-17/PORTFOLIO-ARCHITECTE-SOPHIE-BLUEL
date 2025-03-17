@@ -3,9 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initializeApp();
 });
 
-// ==========================
 // INITIALIZATION
-// ==========================
+
 async function initializeApp() {
   try {
     await Promise.all([fetchWorks(), fetchCategories()]);
@@ -17,9 +16,8 @@ async function initializeApp() {
   }
 }
 
-// ==========================
 // AUTHENTIFICATION
-// ==========================
+
 function checkUserLogin() {
   return !!sessionStorage.getItem("token");
 }
@@ -42,9 +40,8 @@ function setupLoginLogout() {
   }
 }
 
-// ==========================
 // MESSAGES
-// ==========================
+
 function translateError(message) {
   const errorMessages = {
     "Failed to fetch": "Vous êtes hors connexion",
@@ -67,9 +64,8 @@ function showErrorMessage(message) {
   }
 }
 
-// ==========================
 // FETCH DATA (API CALLS)
-// ==========================
+
 async function fetchWorks() {
   try {
     const response = await fetch("http://localhost:5678/api/works");
@@ -121,9 +117,8 @@ async function loadCategoriesForModal() {
   }
 }
 
-// ==========================
 // DISPLAY DATA
-// ==========================
+
 function displayWorks(works) {
   const gallery = document.querySelector(".gallery");
   gallery.innerHTML = "";
@@ -216,9 +211,8 @@ function displayModalGallery(works) {
   });
 }
 
-// ==========================
 // DELETE WORK (SECURED)
-// ==========================
+
 async function deleteWork(workId) {
   const token = sessionStorage.getItem("token");
   if (!token) {
@@ -240,9 +234,8 @@ async function deleteWork(workId) {
   }
 }
 
-// ==========================
 // ADMIN PANEL & EDIT BAR
-// ==========================
+
 function setupAdminPanel() {
   const adminPanel = document.getElementById("admin-panel");
   const filters = document.querySelector(".filters");
@@ -321,9 +314,8 @@ function handleFileInput(event) {
   reader.readAsDataURL(file);
 }
 
-// ==========================
 // MODAL MANAGEMENT
-// ==========================
+
 function setupModals() {
   const modalGallery = document.getElementById("modal-gallery");
   const modalAddPhoto = document.getElementById("modal-add-photo");
