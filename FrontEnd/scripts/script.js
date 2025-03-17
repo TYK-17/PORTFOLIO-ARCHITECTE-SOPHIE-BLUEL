@@ -3,6 +3,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initializeApp();
 });
 
+// Variables globales
+let cachedWorks = [];
+let cachedCategories = [];
+
 // INITIALIZATION
 
 async function initializeApp() {
@@ -60,7 +64,7 @@ function showErrorMessage(message) {
   const errorElement = document.querySelector("#error");
   if (errorElement) {
     errorElement.innerText = message;
-    errorElement.style.display = "block";
+    errorElement.style.display = message ? "block" : "none";
   }
 }
 
@@ -71,37 +75,36 @@ async function fetchCategories() {
     const response = await fetch("http://localhost:5678/api/categories");
     if (!response.ok)
       throw new Error("Erreur lors de la récupération des catégories");
-    const categories = await response.json();
-    displayFilters(categories);
+
+    cachedCategories = await response.json();
+
+    displayFilters(cachedCategories);
   } catch (error) {
     showErrorMessage(translateError(error.message));
   }
 }
 
-async function loadCategoriesForModal() {
+function loadCategoriesForModal() {
   const categoryInput = document.getElementById("photo-category");
+
   if (!categoryInput) return;
 
-  try {
-    const response = await fetch("http://localhost:5678/api/categories");
-    if (!response.ok)
-      throw new Error("Erreur lors de la récupération des catégories");
-    const categories = await response.json();
-
-    categoryInput.innerHTML = ""; // Reset select
-    const emptyOption = document.createElement("option");
-    emptyOption.value = "";
-    categoryInput.appendChild(emptyOption);
-
-    categories.forEach((category) => {
-      const option = document.createElement("option");
-      option.value = category.id;
-      option.textContent = category.name;
-      categoryInput.appendChild(option);
-    });
-  } catch (error) {
-    showErrorMessage(translateError(error.message));
+  if (!cachedCategories.length) {
+    showErrorMessage("Erreur lors de la récupération des catégories.");
+    return;
   }
+
+  categoryInput.innerHTML = ""; // Reset select
+  const emptyOption = document.createElement("option");
+  emptyOption.value = "";
+  categoryInput.appendChild(emptyOption);
+
+  cachedCategories.forEach((category) => {
+    const option = document.createElement("option");
+    option.value = category.id;
+    option.textContent = category.name;
+    categoryInput.appendChild(option);
+  });
 }
 
 // DISPLAY DATA
@@ -156,8 +159,6 @@ function createFilterButton(label, onClick, isActive = false) {
 
   return button;
 }
-
-let cachedWorks = [];
 
 async function fetchWorks() {
   try {
