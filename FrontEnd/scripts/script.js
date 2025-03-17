@@ -66,19 +66,6 @@ function showErrorMessage(message) {
 
 // FETCH DATA (API CALLS)
 
-async function fetchWorks() {
-  try {
-    const response = await fetch("http://localhost:5678/api/works");
-    if (!response.ok)
-      throw new Error("Erreur lors de la récupération des travaux");
-    const works = await response.json();
-    displayWorks(works);
-    displayModalGallery(works);
-  } catch (error) {
-    showErrorMessage(translateError(error.message));
-  }
-}
-
 async function fetchCategories() {
   try {
     const response = await fetch("http://localhost:5678/api/categories");
@@ -142,7 +129,7 @@ function displayFilters(categories) {
   const filterContainer = document.querySelector(".filters");
   filterContainer.innerHTML = "";
 
-  const allButton = createFilterButton("Tous", fetchWorks, true);
+  const allButton = createFilterButton("Tous", () => filterWorks(null), true);
   filterContainer.appendChild(allButton);
 
   categories.forEach((category) => {
@@ -170,18 +157,28 @@ function createFilterButton(label, onClick, isActive = false) {
   return button;
 }
 
-async function filterWorks(categoryId) {
+let cachedWorks = [];
+
+async function fetchWorks() {
   try {
     const response = await fetch("http://localhost:5678/api/works");
-    if (!response.ok) throw new Error("Erreur lors du filtrage");
-    const works = await response.json();
-    const filteredWorks = works.filter(
-      (work) => work.categoryId === categoryId
-    );
-    displayWorks(filteredWorks);
+    if (!response.ok)
+      throw new Error("Erreur lors de la récupération des travaux");
+
+    cachedWorks = await response.json();
+    displayWorks(cachedWorks);
+    displayModalGallery(cachedWorks);
   } catch (error) {
     showErrorMessage(translateError(error.message));
   }
+}
+
+function filterWorks(categoryId) {
+  const filteredWorks = categoryId
+    ? cachedWorks.filter((work) => work.categoryId === categoryId)
+    : cachedWorks;
+
+  displayWorks(filteredWorks);
 }
 
 function displayModalGallery(works) {
