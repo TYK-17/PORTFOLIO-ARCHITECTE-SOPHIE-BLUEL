@@ -1,14 +1,14 @@
+// Lorsque le DOM est complètement chargé, on initialise l'application
 document.addEventListener("DOMContentLoaded", () => {
   setupLoginLogout();
   initializeApp();
 });
 
-// Variables globales
+// Variables globales utilisées comme cache local
 let cachedWorks = [];
 let cachedCategories = [];
 
 // INITIALIZATION
-
 async function initializeApp() {
   try {
     await Promise.all([fetchWorks(), fetchCategories()]);
@@ -21,11 +21,12 @@ async function initializeApp() {
 }
 
 // AUTHENTIFICATION
-
+// Vérifie si l'utilisateur est connecté en regardant s'il y a un token dans sessionStorage
 function checkUserLogin() {
   return !!sessionStorage.getItem("token");
 }
 
+// Gère l'affichage du bouton login/logout selon l'état de connexion de l'utilisateur
 function setupLoginLogout() {
   const loginLogout = document.getElementById("login-logout");
 
@@ -45,7 +46,7 @@ function setupLoginLogout() {
 }
 
 // MESSAGES
-
+// Traduit les messages d'erreur techniques en français pour l'utilisateur
 function translateError(message) {
   const errorMessages = {
     "Failed to fetch": "Vous êtes hors connexion",
@@ -60,6 +61,7 @@ function translateError(message) {
   return errorMessages[message] || message;
 }
 
+// Affiche un message d'erreur dans la zone prévue
 function showErrorMessage(message) {
   const errorElement = document.querySelector("#error");
   if (errorElement) {
@@ -69,7 +71,6 @@ function showErrorMessage(message) {
 }
 
 // FETCH DATA (API CALLS)
-
 async function fetchCategories() {
   try {
     const response = await fetch("http://localhost:5678/api/categories");
@@ -108,7 +109,7 @@ function loadCategoriesForModal() {
 }
 
 // DISPLAY DATA
-
+// Affiche les projets dans la galerie principale
 function displayWorks(works) {
   const gallery = document.querySelector(".gallery");
   gallery.innerHTML = "";
@@ -128,6 +129,7 @@ function displayWorks(works) {
   });
 }
 
+// Affiche les boutons filtres pour les catégories
 function displayFilters(categories) {
   const filterContainer = document.querySelector(".filters");
   filterContainer.innerHTML = "";
@@ -135,6 +137,7 @@ function displayFilters(categories) {
   const allButton = createFilterButton("Tous", () => filterWorks(null), true);
   filterContainer.appendChild(allButton);
 
+  // Parcourt chaque catégorie et crée un bouton de filtre correspondant
   categories.forEach((category) => {
     const button = createFilterButton(category.name, () =>
       filterWorks(category.id)
@@ -143,6 +146,7 @@ function displayFilters(categories) {
   });
 }
 
+// Crée un bouton de filtre avec gestion des clics
 function createFilterButton(label, onClick, isActive = false) {
   const button = document.createElement("button");
   button.textContent = label;
@@ -174,6 +178,7 @@ async function fetchWorks() {
   }
 }
 
+// Fonction qui filtre les projets selon la catégorie sélectionnée
 function filterWorks(categoryId) {
   const filteredWorks = categoryId
     ? cachedWorks.filter((work) => work.categoryId === categoryId)
@@ -182,6 +187,7 @@ function filterWorks(categoryId) {
   displayWorks(filteredWorks);
 }
 
+// Fonction qui affiche les projets dans la galerie modale d'administration
 function displayModalGallery(works) {
   const modalGallery = document.querySelector("#modal-gallery .gallery");
   modalGallery.innerHTML = "";
@@ -209,10 +215,12 @@ function displayModalGallery(works) {
   });
 }
 
-// DELETE WORK (SECURED)
-
+// DELETE WORK
+// Supprime un projet en appelant l'API
 async function deleteWork(workId) {
   const token = sessionStorage.getItem("token");
+
+  // Vérifie si l'utilisateur est connecté (token présent)
   if (!token) {
     alert("Connectez-vous pour supprimer un projet.");
     return;
@@ -233,13 +241,15 @@ async function deleteWork(workId) {
 }
 
 // ADMIN PANEL & EDIT BAR
-
+// Fonction qui affiche ou masque le panneau d'administration et les filtres
 function setupAdminPanel() {
   const adminPanel = document.getElementById("admin-panel");
   const filters = document.querySelector(".filters");
 
+  // Si les éléments ne sont pas trouvés, on arrête la fonction
   if (!adminPanel || !filters) return;
 
+  // Si l'utilisateur est connecté (mode admin)
   if (checkUserLogin()) {
     adminPanel.style.display = "block";
     filters.style.display = "none";
@@ -270,6 +280,7 @@ function setupEditBar() {
   }
 }
 
+// Fonction qui gère la sélection et l'affichage d'un fichier image dans le formulaire d'ajout de photo
 function handleFileInput(event) {
   const preview = document.getElementById("image-preview");
   const fileInput = event.target;
@@ -280,9 +291,11 @@ function handleFileInput(event) {
     return;
   }
 
+  // Liste des types de fichiers autorisés
   const allowedTypes = ["image/jpeg", "image/png"];
   const maxSizeInBytes = 4 * 1024 * 1024;
 
+  // Vérifie si le type du fichier sélectionné est valide (JPEG ou PNG)
   if (!allowedTypes.includes(file.type)) {
     alert("Format invalide ! JPG ou PNG requis.");
     fileInput.value = "";
@@ -290,6 +303,7 @@ function handleFileInput(event) {
     return;
   }
 
+  // Vérifie si le fichier est trop volumineux
   if (file.size > maxSizeInBytes) {
     alert("Fichier trop volumineux ! Maximum 4 Mo.");
     fileInput.value = "";
@@ -297,6 +311,7 @@ function handleFileInput(event) {
     return;
   }
 
+  // Crée un objet FileReader pour lire le contenu du fichier
   const reader = new FileReader();
   reader.onload = (e) => {
     preview.classList.add("has-image");
@@ -313,7 +328,6 @@ function handleFileInput(event) {
 }
 
 // MODAL MANAGEMENT
-
 function setupModals() {
   const modalGallery = document.getElementById("modal-gallery");
   const modalAddPhoto = document.getElementById("modal-add-photo");
@@ -344,6 +358,7 @@ function setupModals() {
     });
   }
 
+  // Vérifie si la modale galerie existe
   if (modalGallery) {
     modalGallery.addEventListener("click", (e) => {
       if (e.target === modalGallery) {
@@ -396,6 +411,7 @@ function setupModals() {
     });
   }
 
+  // Boucle sur tous les champs du formulaire (fichier, titre, catégorie)
   [fileInput, titleInput, categoryInput].forEach((input) => {
     if (input) {
       input.addEventListener("input", () =>
@@ -404,6 +420,7 @@ function setupModals() {
     }
   });
 
+  // Sélectionne le formulaire complet d'ajout de photo
   const addPhotoForm = document.getElementById("add-photo-form");
   if (addPhotoForm) {
     addPhotoForm.addEventListener("submit", async (e) => {
@@ -413,6 +430,7 @@ function setupModals() {
   }
 }
 
+// Vérifie si tous les champs du formulaire sont remplis pour activer le bouton de validation
 function checkFormCompletion(fileInput, titleInput, categoryInput) {
   const validateBtn = document.getElementById("validate-btn");
   validateBtn.disabled = !(
@@ -422,6 +440,7 @@ function checkFormCompletion(fileInput, titleInput, categoryInput) {
   );
 }
 
+// Soumet une nouvelle photo au serveur après vérification et préparation des données
 async function submitNewPhoto(fileInput, titleInput, categoryInput) {
   const file = fileInput.files[0];
   const title = titleInput.value
@@ -431,14 +450,17 @@ async function submitNewPhoto(fileInput, titleInput, categoryInput) {
   const categoryId = categoryInput.value;
   const token = sessionStorage.getItem("token");
 
+  // Vérifie que tous les champs sont remplis
   if (!file || !title || !categoryId) {
     alert("Tous les champs sont obligatoires !");
     return;
   }
 
+  // Crée un nouveau fichier en renommant avec le titre et en conservant l'extension d'origine
   const newFile = new File([file], `${title}.${file.name.split(".").pop()}`, {
     type: file.type,
   });
+  // Prépare l'objet FormData pour envoyer les données sous forme multipart/form-data
   const formData = new FormData();
   formData.append("image", newFile);
   formData.append("title", title);
@@ -450,6 +472,7 @@ async function submitNewPhoto(fileInput, titleInput, categoryInput) {
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
     });
+    // Si la réponse est mauvaise (statut HTTP non 200), on lève une erreur
     if (!response.ok) throw new Error("Erreur lors de l'ajout");
     await fetchWorks();
     closeAllModals();
@@ -458,6 +481,7 @@ async function submitNewPhoto(fileInput, titleInput, categoryInput) {
   }
 }
 
+// Réinitialise l'aperçu de l'image dans le formulaire d'ajout
 function resetImagePreview(preview) {
   preview.classList.remove("has-image");
   preview.innerHTML = `
@@ -467,6 +491,7 @@ function resetImagePreview(preview) {
   `;
 }
 
+// Réinitialise complètement le formulaire d'ajout de photo
 function resetAddPhotoForm() {
   const addPhotoForm = document.getElementById("add-photo-form");
   const fileInput = document.getElementById("photo-file");
@@ -481,16 +506,19 @@ function resetAddPhotoForm() {
   validateBtn.disabled = true;
 }
 
+// Ouvre une modale spécifique
 function openModal(modalElement) {
   modalElement.classList.add("open");
 }
 
+// Ferme une modale spécifique
 function closeModal(modalElement) {
   if (modalElement && modalElement.classList.contains("open")) {
     modalElement.classList.remove("open");
   }
 }
 
+// Ferme toutes les modales ouvertes
 function closeAllModals() {
   closeModal(document.getElementById("modal-gallery"));
   closeModal(document.getElementById("modal-add-photo"));

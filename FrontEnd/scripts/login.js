@@ -7,8 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
 function setupLogin() {
   const form = document.getElementById("login");
 
-  if (!form) return; // Vérifie que le formulaire existe
+  if (!form) return; // Si le formulaire n'existe pas dans le DOM, on arrête la fonction
 
+  // Ajoute un écouteur d'événement sur la soumission du formulaire
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -19,6 +20,7 @@ function setupLogin() {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
 
+    // Vérifie si les champs sont remplis
     if (!email || !password) {
       showError("Veuillez remplir tous les champs !");
       resetSubmitButton(submitButton);
@@ -32,10 +34,12 @@ function setupLogin() {
         body: JSON.stringify({ email, password }),
       });
 
+      // Si la réponse n'est pas correcte (exemple : mauvais identifiants)
       if (!response.ok) {
         throw new Error("Identifiants incorrects !");
       }
 
+      // Stocke le token et l'userId dans le sessionStorage pour l'authentification sur les autres pages
       const data = await response.json();
       sessionStorage.setItem("token", data.token);
       sessionStorage.setItem("userId", data.userId);
@@ -91,7 +95,7 @@ function resetSubmitButton(button) {
 
 /* Ajoute un projet (requête `POST /works`) */
 async function addWork(image, title, category) {
-  const token = sessionStorage.getItem("token");
+  const token = sessionStorage.getItem("token"); // Vérifie la présence du token pour autoriser l'action
 
   if (!token) {
     alert("Vous devez être connecté pour ajouter un projet.");
@@ -122,7 +126,7 @@ async function addWork(image, title, category) {
   }
 }
 
-/* Supprime un projet */
+/* Supprime un projet via l'API (requête DELETE sur /works/{id}) */
 async function deleteWork(workId) {
   const token = sessionStorage.getItem("token");
 
