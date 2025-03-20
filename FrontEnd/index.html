@@ -124,8 +124,9 @@
     <!-- MODAL -->
     <div id="modal-gallery" class="modal">
       <div class="modal-content">
-        <span class="close">&times;</span>
+        <button class="close" aria-label="Fermer la fenêtre">✖</button>
         <h2>Galerie photo</h2>
+        <p class="modal-error-message"></p>
         <div class="gallery"></div>
         <hr class="gallery-divider" />
         <button class="add-photo-btn">Ajouter une photo</button>
@@ -140,7 +141,7 @@
         </button>
         <button class="close-add" aria-label="Fermer la fenêtre">✖</button>
         <h2>Ajout photo</h2>
-
+        <p class="modal-error-message"></p>
         <div class="image-upload">
           <label for="photo-file" class="upload-area">
             <div id="image-preview" class="preview">
@@ -161,7 +162,12 @@
         <form id="add-photo-form">
           <div class="form-group">
             <label for="photo-title">Titre</label>
-            <input type="text" id="photo-title" name="photo-title" />
+            <input
+              type="text"
+              id="photo-title"
+              name="photo-title"
+              maxlength="40"
+            />
           </div>
 
           <div class="form-group">

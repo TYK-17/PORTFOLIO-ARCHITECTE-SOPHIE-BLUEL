@@ -1,15 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
   setupLogin();
-  checkUserLogin(); // Vérifie si l'utilisateur est connecté au chargement de la page
 });
 
 /* Gère la connexion de l'utilisateur */
 function setupLogin() {
   const form = document.getElementById("login");
 
-  if (!form) return; // Si le formulaire n'existe pas dans le DOM, on arrête la fonction
+  if (!form) return;
 
-  // Ajoute un écouteur d'événement sur la soumission du formulaire
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -20,7 +18,6 @@ function setupLogin() {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
 
-    // Vérifie si les champs sont remplis
     if (!email || !password) {
       showError("Veuillez remplir tous les champs !");
       resetSubmitButton(submitButton);
@@ -34,18 +31,16 @@ function setupLogin() {
         body: JSON.stringify({ email, password }),
       });
 
-      // Si la réponse n'est pas correcte (exemple : mauvais identifiants)
       if (!response.ok) {
         throw new Error("Identifiants incorrects !");
       }
 
-      // Stocke le token et l'userId dans le sessionStorage pour l'authentification sur les autres pages
       const data = await response.json();
       sessionStorage.setItem("token", data.token);
       sessionStorage.setItem("userId", data.userId);
 
-      form.reset(); // Réinitialise le formulaire
-      window.location.href = "index.html"; // Redirection après connexion
+      form.reset();
+      window.location.href = "index.html";
     } catch (error) {
       console.error(error);
       if (error.message === "Failed to fetch") {
@@ -59,96 +54,16 @@ function setupLogin() {
   });
 }
 
-/* Vérifie si l'utilisateur est connecté et met à jour l'interface */
-function checkUserLogin() {
-  const token = sessionStorage.getItem("token");
-  const loginButton = document.querySelector(".log-in-out");
-
-  if (token) {
-    loginButton.innerHTML = `<a href="#" id="logout">logout</a>`;
-    document.getElementById("logout").addEventListener("click", logoutUser);
-  }
-}
-
-/* Gère la déconnexion de l'utilisateur */
-function logoutUser() {
-  sessionStorage.removeItem("token");
-  sessionStorage.removeItem("userId");
-  window.location.href = "login.html"; // Redirection vers la page de connexion
-}
-
-/* Affiche un message d'erreur en cas d'échec de connexion */
 function showError(message) {
   const errorMessage = document.getElementById("error-login");
   errorMessage.textContent = message;
   errorMessage.style.color = "red";
   errorMessage.style.marginTop = "1rem";
   errorMessage.style.fontWeight = "bold";
-  errorMessage.style.display = "block"; // S'assurer qu'il est visible
+  errorMessage.style.display = "block";
 }
 
-/* Réinitialise le bouton de soumission après la connexion */
 function resetSubmitButton(button) {
   button.value = "Se connecter";
   button.disabled = false;
-}
-
-/* Ajoute un projet (requête `POST /works`) */
-async function addWork(image, title, category) {
-  const token = sessionStorage.getItem("token"); // Vérifie la présence du token pour autoriser l'action
-
-  if (!token) {
-    alert("Vous devez être connecté pour ajouter un projet.");
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("image", image);
-  formData.append("title", title);
-  formData.append("category", category);
-
-  try {
-    const response = await fetch("http://localhost:5678/api/works", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    });
-
-    if (!response.ok) {
-      throw new Error("Erreur lors de l'ajout du projet.");
-    }
-
-    alert("Projet ajouté avec succès !");
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-/* Supprime un projet via l'API (requête DELETE sur /works/{id}) */
-async function deleteWork(workId) {
-  const token = sessionStorage.getItem("token");
-
-  if (!token) {
-    alert("Vous devez être connecté pour supprimer un projet.");
-    return;
-  }
-
-  try {
-    const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Erreur lors de la suppression du projet.");
-    }
-
-    alert("Projet supprimé avec succès !");
-  } catch (error) {
-    console.error(error);
-  }
 }

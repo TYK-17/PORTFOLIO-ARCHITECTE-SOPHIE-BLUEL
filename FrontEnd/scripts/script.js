@@ -70,6 +70,15 @@ function showErrorMessage(message) {
   }
 }
 
+function showModalErrorMessage(modalElement, message) {
+  const errorElement = modalElement.querySelector(".modal-error-message");
+
+  if (errorElement) {
+    errorElement.innerText = message;
+    errorElement.style.display = message ? "block" : "none";
+  }
+}
+
 // FETCH DATA (API CALLS)
 async function fetchCategories() {
   try {
@@ -81,7 +90,12 @@ async function fetchCategories() {
 
     displayFilters(cachedCategories);
   } catch (error) {
+    const modalGallery = document.getElementById("modal-gallery");
+    const modalAddPhoto = document.getElementById("modal-add-photo");
+
     showErrorMessage(translateError(error.message));
+    showModalErrorMessage(modalGallery, translateError(error.message));
+    showModalErrorMessage(modalAddPhoto, translateError(error.message));
   }
 }
 
@@ -129,6 +143,22 @@ function displayWorks(works) {
   });
 }
 
+function filterWorks(categoryId) {
+  let filteredWorks;
+
+  if (categoryId === null) {
+    // Cas "Tous"
+    filteredWorks = cachedWorks;
+  } else {
+    // Filtrage par catégorie
+    filteredWorks = cachedWorks.filter(
+      (work) => work.categoryId === Number(categoryId)
+    );
+  }
+
+  displayWorks(filteredWorks);
+}
+
 // Affiche les boutons filtres pour les catégories
 function displayFilters(categories) {
   const filterContainer = document.querySelector(".filters");
@@ -167,6 +197,7 @@ function createFilterButton(label, onClick, isActive = false) {
 async function fetchWorks() {
   try {
     const response = await fetch("http://localhost:5678/api/works");
+
     if (!response.ok)
       throw new Error("Erreur lors de la récupération des travaux");
 
@@ -174,17 +205,13 @@ async function fetchWorks() {
     displayWorks(cachedWorks);
     displayModalGallery(cachedWorks);
   } catch (error) {
+    console.error("Erreur fetchWorks :", error.message);
+
     showErrorMessage(translateError(error.message));
+
+    const modalGallery = document.getElementById("modal-gallery");
+    showModalErrorMessage(modalGallery, translateError(error.message));
   }
-}
-
-// Fonction qui filtre les projets selon la catégorie sélectionnée
-function filterWorks(categoryId) {
-  const filteredWorks = categoryId
-    ? cachedWorks.filter((work) => work.categoryId === categoryId)
-    : cachedWorks;
-
-  displayWorks(filteredWorks);
 }
 
 // Fonction qui affiche les projets dans la galerie modale d'administration
@@ -233,10 +260,12 @@ async function deleteWork(workId) {
     });
 
     if (!response.ok) throw new Error("Erreur lors de la suppression");
-    fetchWorks();
+    await fetchWorks();
     closeAllModals();
   } catch (error) {
     showErrorMessage(translateError(error.message));
+    const modalGallery = document.getElementById("modal-gallery");
+    showModalErrorMessage(modalGallery, translateError(error.message));
   }
 }
 
@@ -445,10 +474,14 @@ async function submitNewPhoto(fileInput, titleInput, categoryInput) {
   const file = fileInput.files[0];
   const title = titleInput.value
     .trim()
-    .replace(/[^a-zA-Z0-9-_]/g, "_")
-    .toLowerCase();
+    .replace(/[^a-zA-ZÀ-ÿ0-9\s"'-.,!?]/g, "");
   const categoryId = categoryInput.value;
   const token = sessionStorage.getItem("token");
+
+  if (title.length > 50) {
+    alert("Le titre ne doit pas dépasser 50 caractères !");
+    return;
+  }
 
   // Vérifie que tous les champs sont remplis
   if (!file || !title || !categoryId) {
@@ -456,13 +489,9 @@ async function submitNewPhoto(fileInput, titleInput, categoryInput) {
     return;
   }
 
-  // Crée un nouveau fichier en renommant avec le titre et en conservant l'extension d'origine
-  const newFile = new File([file], `${title}.${file.name.split(".").pop()}`, {
-    type: file.type,
-  });
   // Prépare l'objet FormData pour envoyer les données sous forme multipart/form-data
   const formData = new FormData();
-  formData.append("image", newFile);
+  formData.append("image", file);
   formData.append("title", title);
   formData.append("category", categoryId);
 
@@ -478,6 +507,8 @@ async function submitNewPhoto(fileInput, titleInput, categoryInput) {
     closeAllModals();
   } catch (error) {
     showErrorMessage(translateError(error.message));
+    const modalAddPhoto = document.getElementById("modal-add-photo");
+    showModalErrorMessage(modalAddPhoto, translateError(error.message));
   }
 }
 
@@ -507,7 +538,14 @@ function resetAddPhotoForm() {
 }
 
 // Ouvre une modale spécifique
+//Réinitialise le message d'erreur dans la modale à chaque ouverture
 function openModal(modalElement) {
+  const errorElement = modalElement.querySelector(".modal-error-message");
+  if (errorElement) {
+    errorElement.innerText = "";
+    errorElement.style.display = "none";
+  }
+
   modalElement.classList.add("open");
 }
 
