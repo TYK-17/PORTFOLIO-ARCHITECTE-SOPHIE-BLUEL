@@ -472,9 +472,8 @@ function checkFormCompletion(fileInput, titleInput, categoryInput) {
 // Soumet une nouvelle photo au serveur après vérification et préparation des données
 async function submitNewPhoto(fileInput, titleInput, categoryInput) {
   const file = fileInput.files[0];
-  const title = titleInput.value
-    .trim()
-    .replace(/[^a-zA-ZÀ-ÿ0-9\s"'-.,!?]/g, "");
+  const title = titleInput.value.trim();
+
   const categoryId = categoryInput.value;
   const token = sessionStorage.getItem("token");
 
